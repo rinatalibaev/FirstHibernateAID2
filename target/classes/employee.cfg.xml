@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="first.Employee" table="employee">
+		<id name="empNo" column="EmpNo">
+			<generator class="native" />
+		</id>	
+		<property name="empSurname" column="EmpSurname" type="string"/>
+		<property name="empFirstname" column="EmpFirstname" type="string"/>
+		<property name="empFathername" column="EmpFathername" type="string"/>
+		<property name="empPosition" column="EmpPosition" type="string"/>
+		<property name="empEmail" column="EmpEmail" type="string"/>
+		<property name="empPhone" column="EmpPhone" type="string"/>
+		<property name="empPhoneAdditionalDigits" column="EmpPhoneAdditionalDigits" type="string"/>
+		<property name="empRegion" column="EmpRegion" type="string"/>
+		<property name="empCity" column="EmpCity" type="string"/>
+		<property name="empStreet" column="EmpStreet" type="string"/>
+		<property name="empHouse" column="EmpHouse" type="string"/>
+		<property name="empOffice" column="EmpOffice" type="string"/>
+		<property name="empHousePart" column="EmpHousePart" type="string"/>
+		<set name="mailOrders_by_receiver" table="MailOrder">
+			<key>
+				<column name="mailOrdReceiverNo" not-null="true"></column>
+			</key>
+			<one-to-many class="first.MailOrder"/>
+		</set>
+		<set name="mailOrders_by_sender" table="MailOrder">
+			<key>
+				<column name="mailOrdSenderNo" not-null="true"></column>
+			</key>
+			<one-to-many class="first.MailOrder"/>
+		</set>
+	</class>
+</hibernate-mapping>
