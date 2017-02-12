@@ -1,20 +1,5 @@
 package models;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
-
-import controllers.HibernateUtil;
 import controllers.MainWindowController;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -24,45 +9,49 @@ public class Main extends Application {
 	@SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-
-		try {
-			String empFirstName = "Rinat";
-			Criteria criteria = session.createCriteria(Employee.class);
-			Criterion eqEmpFirstName = Restrictions.eq("empFirstname", empFirstName);
-			System.out.println(criteria.toString());
-			List<Employee> employees = criteria.list();
-			for (Employee employee : employees) {
-				System.out.println(employee.toString());
-			}
-			for (Employee employee : employees) {
-				System.out.print(employee.getId() + " | ");
-			}
-			System.out.println();
-
-			ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-			Validator validator = validatorFactory.getValidator();
-			for (Employee employee : employees) {
-				Set<ConstraintViolation<Employee>> constrs = validator.validate(employee);
-				for (ConstraintViolation<Employee> constr : constrs) {
-					System.out.print(constr.getRootBean().getEmpSurname() + " " + constr.getRootBean().getEmpFirstname() + " - ");
-					StringBuilder stringBuilder = new StringBuilder("property: ");
-					stringBuilder.append(constr.getPropertyPath() + " ");
-					stringBuilder.append("value: ");
-					stringBuilder.append(constr.getInvalidValue() + " ");
-					stringBuilder.append("message: ");
-					stringBuilder.append(constr.getMessage());
-					System.out.println(stringBuilder.toString());
-				}
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-
-		}
-		// session.close();
-		// sessionFactory.close();
+		// SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		// Session session = sessionFactory.openSession();
+		//
+		// try {
+		// String empFirstName = "Rinat";
+		// Criteria criteria = session.createCriteria(Employee.class);
+		// Criterion eqEmpFirstName = Restrictions.eq("empFirstname",
+		// empFirstName);
+		// System.out.println(criteria.toString());
+		// List<Employee> employees = criteria.list();
+		// for (Employee employee : employees) {
+		// System.out.println(employee.toString());
+		// }
+		// for (Employee employee : employees) {
+		// System.out.print(employee.getId() + " | ");
+		// }
+		// System.out.println();
+		//
+		// ValidatorFactory validatorFactory =
+		// Validation.buildDefaultValidatorFactory();
+		// Validator validator = validatorFactory.getValidator();
+		// for (Employee employee : employees) {
+		// Set<ConstraintViolation<Employee>> constrs =
+		// validator.validate(employee);
+		// for (ConstraintViolation<Employee> constr : constrs) {
+		// System.out.print(constr.getRootBean().getEmpSurname() + " " +
+		// constr.getRootBean().getEmpFirstname() + " - ");
+		// StringBuilder stringBuilder = new StringBuilder("property: ");
+		// stringBuilder.append(constr.getPropertyPath() + " ");
+		// stringBuilder.append("value: ");
+		// stringBuilder.append(constr.getInvalidValue() + " ");
+		// stringBuilder.append("message: ");
+		// stringBuilder.append(constr.getMessage());
+		// System.out.println(stringBuilder.toString());
+		// }
+		// }
+		// } catch (Exception ex) {
+		// ex.printStackTrace();
+		// } finally {
+		//
+		// }
+		// // session.close();
+		// // sessionFactory.close();
 		launch(args);
 	}
 

@@ -64,7 +64,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </ImageView>
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="107.0" text="Ремонт" />
+            <Label alignment="CENTER" onMouseClicked="#openDBDocuments" prefHeight="17.0" prefWidth="107.0" text="Документы" />
          </children>
       </VBox>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">

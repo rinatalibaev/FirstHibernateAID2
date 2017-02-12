@@ -10,6 +10,7 @@
 		<property name="show_sql">true</property>
 		<property name="hbm2ddl.auto">update</property>
 		<mapping class="models.Employee"/>
+		<mapping class="models.Documents"/>
 		<mapping class="models.MailOrder"/>
 		<mapping class="models.MailOrderStatuses"/>
 	</session-factory>

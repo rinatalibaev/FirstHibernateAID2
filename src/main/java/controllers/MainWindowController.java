@@ -157,4 +157,19 @@ public class MainWindowController extends Application implements WindowControlle
 		}
 
 	}
+
+	@FXML
+	public void openDBDocuments(MouseEvent event) {
+		DBDocumentWindowController dbDocumentWindowController = new DBDocumentWindowController();
+		Window parentWindow = ((Node) event.getSource()).getScene().getWindow();
+		try {
+			dbDocumentWindowController.start(new Stage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// Server server = new Server();
+
+	}
+
 }

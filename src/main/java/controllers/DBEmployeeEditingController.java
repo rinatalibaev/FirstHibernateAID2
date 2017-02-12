@@ -201,4 +201,5 @@ public class DBEmployeeEditingController extends Application implements WindowCo
 	public void closeDBEmployeeWindow(ActionEvent actionEvent) {
 		((Node) actionEvent.getSource()).getScene().getWindow().hide();
 	}
+
 }

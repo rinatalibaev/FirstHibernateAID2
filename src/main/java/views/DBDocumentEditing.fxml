@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" prefHeight="407.0" prefWidth="472.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DBDocumentEditingController">
+   <children>
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="362.0" prefWidth="476.0">
+         <children>
+            <AnchorPane prefHeight="362.0" prefWidth="242.0">
+               <children>
+                  <VBox layoutX="38.0" layoutY="44.0" prefHeight="362.0" prefWidth="153.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label text="Тип документа">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Дата документа">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Дата добавления документа">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Название документа">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Статус документа">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Добавил документ">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Запас1">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Запас2">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Запас3">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Запас4">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Запас5">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Запас6">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="362.0" prefWidth="361.0">
+               <children>
+                  <VBox prefHeight="362.0" prefWidth="361.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <TextField fx:id="docTypeTextField">
+                           <VBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="6.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="docDateTextField">
+                           <VBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="docInsertedDateTextField">
+                           <VBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="docNameTextField">
+                           <VBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="docStatusTextField">
+                           <VBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="docInsertedEmployeeTextField">
+                           <VBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="z1TextField">
+                           <VBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="z2TextField">
+                           <VBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="z3TextField">
+                           <VBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="z4TextField">
+                           <VBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="z5TextField">
+                           <VBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="z6TextField">
+                           <VBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox prefHeight="45.0" prefWidth="459.0" VBox.vgrow="ALWAYS">
+         <children>
+            <AnchorPane prefHeight="45.0" prefWidth="198.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button fx:id="okButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#updateDocument" prefWidth="60.0" text="ОК" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="85.0" />
+                  <Button cancelButton="true" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeDBEmployeeWindow" prefWidth="60.0" text="Отмена" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+   </children>
+</VBox>
