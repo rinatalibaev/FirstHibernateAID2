@@ -1,7 +1,11 @@
 package controllers;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.TransactionRequiredException;
 
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -9,13 +13,18 @@ import org.hibernate.SessionFactory;
 
 import controllers.interfaces.WindowController;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import models.DocTypes;
 import models.Documents;
 
 public class DBDocumentEditingController extends Application implements WindowController {
@@ -27,9 +36,9 @@ public class DBDocumentEditingController extends Application implements WindowCo
 	@FXML
 	TextField docNoTextField;
 	@FXML
-	TextField docTypeTextField;
+	ComboBox<String> docTypeComboBox = new ComboBox<String>();
 	@FXML
-	TextField docDateTextField;
+	DatePicker docDateDatePicker;
 	@FXML
 	TextField docInsertedDateTextField;
 	@FXML
@@ -54,38 +63,63 @@ public class DBDocumentEditingController extends Application implements WindowCo
 	@FXML
 	Button okButton;
 
+	ObservableList<String> DocTypesFull = null;
+	ObservableList<DocTypes> DocTypesAll = null;
+	ObservableList<String> DocTypes = null;
+
 	@Override
 	public void add(ActionEvent actionevent) {
-
 	}
 
 	@Override
 	public void edit() {
-
 	}
 
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
+	}
 
+	@FXML
+	public void initialize() {
+		try {
+			Session session = sessionExtracting();
+			Criteria criteria = session.createCriteria(DocTypes.class);
+			System.out.println(criteria.list().size());
+			DocTypesFull = FXCollections.observableList(criteria.list());
+			for (int i = 0; i < DocTypesFull.size(); i++) {
+				DocTypesFull.set(i, ((DocTypes) criteria.list().get(i)).getDocTypeName());
+				System.out.println(DocTypesFull.get(i));
+			}
+			DocTypes = DocTypesFull;
+			DocTypesAll = FXCollections.observableList(criteria.list());
+			docTypeComboBox.setItems(DocTypes);
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
 	}
 
 	public void addDocument(MouseEvent mouseEvent) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = sessionExtracting();
 
 		try {
 			session.beginTransaction();
 			String sql = "INSERT INTO documents (DocType, DocDate, DocInsertedDate, DocName, DocStatus, DocInsertedEmployee) VALUES (?,?,?,?,?,?)";
 			SQLQuery query = session.createSQLQuery(sql);
-			query.setParameter(0, docTypeTextField.getText());
-			query.setParameter(1, docDateTextField.getText());
-			query.setParameter(2, docInsertedDateTextField.getText());
+			int id = 777;
+			for (int i = 0; i < DocTypesAll.size(); i++) {
+				if (((DocTypes) DocTypesAll.get(i)).getDocTypeName() == docTypeComboBox.getValue()) {
+					id = i;
+					break;
+				}
+			}
+			query.setParameter(0, id);
+			query.setParameter(1, docDateDatePicker.getValue());
+			query.setParameter(2, LocalDateTime.now());
 			query.setParameter(3, docNameTextField.getText());
 			query.setParameter(4, docStatusTextField.getText());
 			query.setParameter(5, docInsertedEmployeeTextField.getText());
@@ -103,15 +137,14 @@ public class DBDocumentEditingController extends Application implements WindowCo
 	}
 
 	public void updateDocument() {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = sessionExtracting();
 
 		try {
 			session.beginTransaction();
-			String hql = "UPDATE Documents set DocType = :DocType, DocType = :DocType, DocInsertedDate = :DocInsertedDate, DocName = :DocName, DocStatus = :DocStatus, DocInsertedEmployee = :DocInsertedEmployee WHERE id = :document_id";
+			String hql = "UPDATE Documents set DocType = :DocType, DocDate = :DocDate, DocInsertedDate = :DocInsertedDate, DocName = :DocName, DocStatus = :DocStatus, DocInsertedEmployee = :DocInsertedEmployee WHERE id = :document_id";
 			Query query = session.createQuery(hql);
-			query.setParameter("DocType", docTypeTextField.getText());
-			query.setParameter("DocDate", docDateTextField.getText());
+			query.setParameter("DocType", docTypeComboBox.getValue());
+			query.setParameter("DocDate", docDateDatePicker.getPromptText());
 			query.setParameter("DocInsertedDate", docInsertedDateTextField.getText());
 			query.setParameter("DocName", docNameTextField.getText());
 			query.setParameter("DocStatus", docStatusTextField.getText());
@@ -133,8 +166,8 @@ public class DBDocumentEditingController extends Application implements WindowCo
 	public void setDocument(Documents selectedDocument) {
 		System.out.println("In setDocument()");
 		document = selectedDocument;
-		docTypeTextField.setText(selectedDocument.getDocType());
-		docDateTextField.setText(selectedDocument.getDocDate());
+		docTypeComboBox.setValue(selectedDocument.getDocType());
+		docDateDatePicker.setPromptText(selectedDocument.getDocDate());
 		docInsertedDateTextField.setText(selectedDocument.getDocInsertedDate());
 		docNameTextField.setText(selectedDocument.getDocName());
 		docStatusTextField.setText(selectedDocument.getDocStatus());
@@ -146,8 +179,7 @@ public class DBDocumentEditingController extends Application implements WindowCo
 	}
 
 	public static void deleteDocument(Documents document) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = sessionExtractingforDeleting();
 
 		try {
 			session.beginTransaction();
@@ -162,6 +194,18 @@ public class DBDocumentEditingController extends Application implements WindowCo
 			// session.close();
 			// sessionFactory.close();
 		}
+	}
+
+	private Session sessionExtracting() {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		return session;
+	}
+
+	private static Session sessionExtractingforDeleting() {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		return session;
 	}
 
 	public void closeDBEmployeeWindow(ActionEvent actionEvent) {

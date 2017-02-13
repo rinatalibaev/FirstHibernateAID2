@@ -11,6 +11,7 @@
 		<property name="hbm2ddl.auto">update</property>
 		<mapping class="models.Employee"/>
 		<mapping class="models.Documents"/>
+		<mapping class="models.DocTypes"/>
 		<mapping class="models.MailOrder"/>
 		<mapping class="models.MailOrderStatuses"/>
 	</session-factory>

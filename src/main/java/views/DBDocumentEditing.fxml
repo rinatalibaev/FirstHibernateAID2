@@ -81,17 +81,13 @@
                <children>
                   <VBox prefHeight="362.0" prefWidth="361.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <TextField fx:id="docTypeTextField">
+                        <ComboBox fx:id="docTypeComboBox" prefHeight="25.0" prefWidth="297.0">
                            <VBox.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="6.0" />
+                              <Insets top="7.0" />
                            </VBox.margin>
-                        </TextField>
-                        <TextField fx:id="docDateTextField">
-                           <VBox.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <TextField fx:id="docInsertedDateTextField">
+                        </ComboBox>
+                        <DatePicker fx:id="docDateDatePicker" prefHeight="25.0" prefWidth="296.0" />
+                        <TextField fx:id="docInsertedDateTextField" editable="false">
                            <VBox.margin>
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </VBox.margin>
