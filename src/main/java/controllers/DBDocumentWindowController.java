@@ -6,8 +6,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import controllers.interfaces.WindowController;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,7 +26,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import models.Documents;
 
-public class DBDocumentWindowController extends Application implements WindowController {
+public class DBDocumentWindowController extends DatabaseViewingWindowController {
 
 	@FXML
 	TableView<Documents> DBDocumentTable;
@@ -46,6 +44,8 @@ public class DBDocumentWindowController extends Application implements WindowCon
 	TableColumn<Documents, String> DBDocumentTableColumn5;
 	@FXML
 	TableColumn<Documents, String> DBDocumentTableColumn6;
+
+	private String delete_hql_query = "DELETE FROM Documents WHERE id = :id";
 
 	@FXML
 	public void initialize() {
@@ -72,23 +72,11 @@ public class DBDocumentWindowController extends Application implements WindowCon
 			public void handle(MouseEvent mouseEvent) {
 				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 					if (mouseEvent.getClickCount() == 2) {
-						DBDocumentEditing(mouseEvent);
+						editingEntry(mouseEvent);
 					}
 				}
 			}
 		});
-	}
-
-	@Override
-	public void add(ActionEvent actionevent) {
-	}
-
-	@Override
-	public void edit() {
-	}
-
-	@Override
-	public void delete() {
 	}
 
 	@Override
@@ -97,7 +85,7 @@ public class DBDocumentWindowController extends Application implements WindowCon
 	}
 
 	@FXML
-	public void DBDocumentAdding() {
+	public void addingEntry() {
 
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -112,7 +100,7 @@ public class DBDocumentWindowController extends Application implements WindowCon
 			dbDocumentEditingController.okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					dbDocumentEditingController.addDocument(event);
+					dbDocumentEditingController.add(event);
 				}
 			});
 			scene = new Scene(fxmlEdit);
@@ -125,7 +113,7 @@ public class DBDocumentWindowController extends Application implements WindowCon
 	}
 
 	@FXML
-	public void DBDocumentEditing(Event event) {
+	public void editingEntry(Event event) {
 		System.out.println("First line in DBDocumentEditing()");
 		Documents selectedDocument = (Documents) DBDocumentTable.getSelectionModel().getSelectedItem();
 		Window parentWindow = ((Node) event.getSource()).getScene().getWindow();
@@ -154,7 +142,7 @@ public class DBDocumentWindowController extends Application implements WindowCon
 
 	public void DBDocumentDeleting() {
 		Documents selectedDocument = (Documents) DBDocumentTable.getSelectionModel().getSelectedItem();
-		DBDocumentEditingController.deleteDocument(selectedDocument);
+		selectedDocument.delete(delete_hql_query);
 		initialize();
 		DBDocumentTable.refresh();
 	}

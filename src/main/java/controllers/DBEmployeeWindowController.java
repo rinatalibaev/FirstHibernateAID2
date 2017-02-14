@@ -6,11 +6,10 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import controllers.interfaces.WindowController;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +26,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import models.Employee;
 
-public class DBEmployeeWindowController extends Application implements WindowController {
+public class DBEmployeeWindowController extends DatabaseViewingWindowController {
 
 	@FXML
 	TableView<Employee> DBEmpTable;
@@ -74,6 +73,8 @@ public class DBEmployeeWindowController extends Application implements WindowCon
 	@FXML
 	TableColumn<Employee, String> DBEmpTableColumn13;
 
+	private String delete_hql_query = "DELETE FROM Employee WHERE id = :id";
+
 	@FXML
 	public void initialize() {
 		DBEmpTableId.setCellValueFactory(new PropertyValueFactory<Employee, String>("id"));
@@ -106,7 +107,7 @@ public class DBEmployeeWindowController extends Application implements WindowCon
 			public void handle(MouseEvent mouseEvent) {
 				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 					if (mouseEvent.getClickCount() == 2) {
-						DBEmployeeEditing(mouseEvent);
+						editingEntry(mouseEvent);
 					}
 				}
 			}
@@ -115,30 +116,12 @@ public class DBEmployeeWindowController extends Application implements WindowCon
 	}
 
 	@Override
-	public void add(ActionEvent actionevent) {
-
-	}
-
-	@Override
-	public void edit() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void start(Stage primarystage) {
-		// TODO Auto-generated method stub
 		stageBuilder("../views/DBEmployeeWindow.fxml", 1100, 285, "АС административного сопровождения - База данных - Сотрудники", 1100, 285, 125, 200);
 	}
 
 	@FXML
-	public void DBEmployeeAdding() {
+	public void addingEntry() {
 
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -153,7 +136,7 @@ public class DBEmployeeWindowController extends Application implements WindowCon
 			dbEmployeeEditingController.okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					dbEmployeeEditingController.addEmployee(event);
+					dbEmployeeEditingController.add(event);
 				}
 			});
 			scene = new Scene(fxmlEdit);
@@ -166,7 +149,7 @@ public class DBEmployeeWindowController extends Application implements WindowCon
 	}
 
 	@FXML
-	public void DBEmployeeEditing(MouseEvent mouseEvent) {
+	public void editingEntry(Event mouseEvent) {
 		Employee selectedEmployee = (Employee) DBEmpTable.getSelectionModel().getSelectedItem();
 		Window parentWindow = ((Node) mouseEvent.getSource()).getScene().getWindow();
 
@@ -192,7 +175,7 @@ public class DBEmployeeWindowController extends Application implements WindowCon
 
 	public void DBEmployeeDeleting() {
 		Employee selectedEmployee = (Employee) DBEmpTable.getSelectionModel().getSelectedItem();
-		DBEmployeeEditingController.deleteEmployee(selectedEmployee);
+		selectedEmployee.delete(delete_hql_query);
 		initialize();
 		DBEmpTable.refresh();
 	}

@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import models.Employee;
 
-public interface WindowController {
+public interface WindowControllerOld {
 
 	public void add(ActionEvent actionevent);
 

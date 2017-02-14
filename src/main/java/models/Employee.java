@@ -14,9 +14,6 @@ public class Employee extends Model {
 
 	private static final long serialVersionUID = 9010402571140471816L;
 
-	// @Column
-	// private int id;
-
 	@Column
 	private String empSurname;
 

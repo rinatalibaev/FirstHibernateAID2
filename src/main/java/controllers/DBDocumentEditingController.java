@@ -9,25 +9,22 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
-import controllers.interfaces.WindowController;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import models.DocTypes;
 import models.Documents;
 
-public class DBDocumentEditingController extends Application implements WindowController {
+public class DBDocumentEditingController extends DatabaseEditingWindowController {
 
 	Documents document;
 	Stage stage;
@@ -67,17 +64,17 @@ public class DBDocumentEditingController extends Application implements WindowCo
 	ObservableList<DocTypes> DocTypesAll = null;
 	ObservableList<String> DocTypes = null;
 
-	@Override
-	public void add(ActionEvent actionevent) {
-	}
-
-	@Override
-	public void edit() {
-	}
-
-	@Override
-	public void delete() {
-	}
+	// @Override
+	// public void add(ActionEvent actionevent) {
+	// }
+	//
+	// @Override
+	// public void edit() {
+	// }
+	//
+	// @Override
+	// public void delete() {
+	// }
 
 	@FXML
 	public void initialize() {
@@ -103,7 +100,7 @@ public class DBDocumentEditingController extends Application implements WindowCo
 	public void start(Stage primaryStage) throws Exception {
 	}
 
-	public void addDocument(MouseEvent mouseEvent) {
+	public void add(Event mouseEvent) {
 		Session session = sessionExtracting();
 
 		try {
@@ -136,7 +133,7 @@ public class DBDocumentEditingController extends Application implements WindowCo
 		}
 	}
 
-	public void updateDocument() {
+	public void update() {
 		Session session = sessionExtracting();
 
 		try {
@@ -178,38 +175,7 @@ public class DBDocumentEditingController extends Application implements WindowCo
 	public void close(ActionEvent event) {
 	}
 
-	public static void deleteDocument(Documents document) {
-		Session session = sessionExtractingforDeleting();
-
-		try {
-			session.beginTransaction();
-			String hql = "DELETE FROM Documents WHERE id = :document_id";
-			Query query = session.createQuery(hql);
-			query.setParameter("document_id", document.getId());
-			query.executeUpdate();
-			session.getTransaction().commit();
-		} catch (TransactionRequiredException tre) {
-			tre.printStackTrace();
-		} finally {
-			// session.close();
-			// sessionFactory.close();
-		}
-	}
-
-	private Session sessionExtracting() {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		return session;
-	}
-
-	private static Session sessionExtractingforDeleting() {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		return session;
-	}
-
 	public void closeDBEmployeeWindow(ActionEvent actionEvent) {
 		((Node) actionEvent.getSource()).getScene().getWindow().hide();
 	}
-
 }

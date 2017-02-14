@@ -44,12 +44,12 @@
          <children>
             <HBox prefHeight="45.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#DBEmployeeAdding" text="Добавить">
+                  <Button mnemonicParsing="false" onAction="#addingEntry" text="Добавить">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onKeyPressed="#DBEmployeeEditing" onMouseClicked="#DBEmployeeEditing" text="Изменить">
+                  <Button mnemonicParsing="false" onKeyPressed="#editingEntry" onMouseClicked="#editingEntry" text="Изменить">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>

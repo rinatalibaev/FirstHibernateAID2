@@ -5,20 +5,17 @@ import javax.persistence.TransactionRequiredException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
-import controllers.interfaces.WindowController;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import models.Employee;
 
-public class DBEmployeeEditingController extends Application implements WindowController {
+public class DBEmployeeEditingController extends DatabaseEditingWindowController {
 
 	Employee employee;
 	Stage stage;
@@ -67,29 +64,12 @@ public class DBEmployeeEditingController extends Application implements WindowCo
 	Button okButton;
 
 	@Override
-	public void add(ActionEvent actionevent) {
-
-	}
-
-	@Override
-	public void edit() {
-
-	}
-
-	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 	}
 
-	public void addEmployee(MouseEvent mouseEvent) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
+	public void add(Event mouseEvent) {
+		Session session = sessionExtracting();
 
 		try {
 			session.beginTransaction();
@@ -116,15 +96,14 @@ public class DBEmployeeEditingController extends Application implements WindowCo
 		} catch (TransactionRequiredException tre) {
 			tre.printStackTrace();
 		} finally {
-			// session.close();
+			session.close();
 			// sessionFactory.close();
 		}
 
 	}
 
-	public void updateEmployee() {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
+	public void update() {
+		Session session = sessionExtracting();
 
 		try {
 			session.beginTransaction();
@@ -152,7 +131,7 @@ public class DBEmployeeEditingController extends Application implements WindowCo
 		} catch (TransactionRequiredException tre) {
 			tre.printStackTrace();
 		} finally {
-			// session.close();
+			session.close();
 			// sessionFactory.close();
 		}
 	}
@@ -177,25 +156,6 @@ public class DBEmployeeEditingController extends Application implements WindowCo
 	@FXML
 	public void close(ActionEvent event) {
 
-	}
-
-	public static void deleteEmployee(Employee employee) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-
-		try {
-			session.beginTransaction();
-			String hql = "DELETE FROM Employee WHERE id = :employee_id";
-			Query query = session.createQuery(hql);
-			query.setParameter("employee_id", employee.getId());
-			query.executeUpdate();
-			session.getTransaction().commit();
-		} catch (TransactionRequiredException tre) {
-			tre.printStackTrace();
-		} finally {
-			// session.close();
-			// sessionFactory.close();
-		}
 	}
 
 	public void closeDBEmployeeWindow(ActionEvent actionEvent) {

@@ -1,17 +1,11 @@
 package controllers;
 
-import java.util.List;
-
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import controllers.interfaces.WindowController;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
@@ -23,7 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import models.Employee;
 
-public class MainWindowController extends Application implements WindowController {
+public class MainWindowController extends WindowController {
 
 	@FXML
 	ImageView idImagesZayavki = new ImageView();
@@ -105,57 +99,14 @@ public class MainWindowController extends Application implements WindowControlle
 		stageBuilder("../views/MainWindow.fxml", 1300, 640, "АС административного сопровождения - ТЭЦ-3 - Гатин Ильдар Рашитович", 1000, 640, 20, 20);
 	}
 
-	public void applyAction(ActionEvent actionEvent) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		List<Employee> employees = null;
-		try {
-			String empFirstName = "Rinat";
-			Query query = session.createQuery("FROM Employee");
-			employees = query.list();
-			for (Employee employee : employees) {
-				System.out.println(employee.toString());
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			// session.close();
-			// sessionFactory.close();
-		}
-	}
-
-	@Override
-	public void add(ActionEvent actionEvent) {
-
-	}
-
-	@Override
-	public void edit() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void openZayavki() {
-		stageBuilder("../views/EmployeesWindow.fxml", 400, 500, "АС административного сопровождения - База данных - Сотрудники", 400, 500, 435, 20);
-	}
-
 	public void openDBEmployees(MouseEvent mouseEvent) {
 		DBEmployeeWindowController dbEmployeeWindowController = new DBEmployeeWindowController();
 		Window parentWindow = ((Node) mouseEvent.getSource()).getScene().getWindow();
 		try {
 			dbEmployeeWindowController.start(new Stage());
-			// parentWindow.hide();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	@FXML
@@ -165,11 +116,7 @@ public class MainWindowController extends Application implements WindowControlle
 		try {
 			dbDocumentWindowController.start(new Stage());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// Server server = new Server();
-
 	}
-
 }

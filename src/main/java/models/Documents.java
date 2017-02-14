@@ -28,15 +28,6 @@ public class Documents extends Model {
 	@Column
 	private String docInsertedEmployee;
 
-	// @OneToMany(mappedBy = "mailOrdReceiverNo")
-	// private Set<MailOrder> receiver_in_MailOrders = new HashSet<MailOrder>();
-	// @OneToMany(mappedBy = "mailOrdSenderNo")
-	// private Set<MailOrder> sender_in_MailOrders = new HashSet<MailOrder>();
-
-	public Documents() {
-
-	}
-
 	public String getDocType() {
 		return docType;
 	}
@@ -84,24 +75,6 @@ public class Documents extends Model {
 	public void setDocInsertedEmployee(String docInsertedEmployee) {
 		this.docInsertedEmployee = docInsertedEmployee;
 	}
-
-	// public Set<MailOrder> getReceiver_in_MailOrders() {
-	// return receiver_in_MailOrders;
-	// }
-	//
-	// public Set<MailOrder> getSender_in_MailOrders() {
-	// return sender_in_MailOrders;
-	// }
-	//
-	// public void setReceiver_in_MailOrders(Set<MailOrder>
-	// receiver_in_MailOrders) {
-	// this.receiver_in_MailOrders = receiver_in_MailOrders;
-	// }
-	//
-	// public void setSender_in_MailOrders(Set<MailOrder> sender_in_MailOrders)
-	// {
-	// this.sender_in_MailOrders = sender_in_MailOrders;
-	// }
 
 	@Override
 	public String toString() {
