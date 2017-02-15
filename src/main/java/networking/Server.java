@@ -1,4 +1,5 @@
-package controllers;
+package networking;
+
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -6,17 +7,21 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class Server implements Runnable {
 
-	public final static int SOCKET_PORT = 13267;
-	public final static String FILE_TO_RECEIVED = "c:/temp/newSource2.pdf";
-	public final static int FILE_SIZE = 2097152; // file size temporary hard
-													// coded
-													// should bigger than the
-													// file to be downloaded
+	private final static int SOCKET_PORT = 13267;
+	private static String FILE_TO_RECEIVED = "c:/temp/";
+	private static String FILE_NAME = null;
+	private static int FILE_SIZE = 2097152; // file size temporary hard
+	// coded
+	// should bigger than the
+	// file to be downloaded
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
+	}
 
+	public static void receive() throws IOException {
+		FILE_TO_RECEIVED = FILE_TO_RECEIVED + FILE_NAME;
 		int bytesRead;
 		int current = 0;
 		FileOutputStream fileOutputStream = null;
@@ -27,6 +32,7 @@ public class Server {
 			servsock = new ServerSocket(SOCKET_PORT);
 			System.out.println("Waiting for connection...");
 			sock = servsock.accept();
+			System.out.println("Connected");
 			// receive file
 			byte[] mybytearray = new byte[FILE_SIZE];
 			InputStream inputStream = sock.getInputStream();
@@ -51,6 +57,42 @@ public class Server {
 				bufferedOutputStream.close();
 			if (sock != null)
 				sock.close();
+			if (servsock != null)
+				servsock.close();
+		}
+	}
+
+	public int getSOCKET_PORT() {
+		return SOCKET_PORT;
+	}
+
+	public String getFILE_TO_RECEIVED() {
+		return FILE_TO_RECEIVED;
+	}
+
+	public String getFILE_NAME() {
+		return FILE_NAME;
+	}
+
+	public int getFILE_SIZE() {
+		return FILE_SIZE;
+	}
+
+	public void setFILE_TO_RECEIVED(String fILE_TO_RECEIVED) {
+		FILE_TO_RECEIVED = fILE_TO_RECEIVED;
+	}
+
+	public void setFILE_NAME(String fILE_NAME) {
+		FILE_NAME = fILE_NAME;
+	}
+
+	@Override
+	public void run() {
+		try {
+			receive();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

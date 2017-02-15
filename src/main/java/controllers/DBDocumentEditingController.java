@@ -1,5 +1,7 @@
 package controllers;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 import javax.persistence.TransactionRequiredException;
@@ -20,9 +22,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import models.DocTypes;
 import models.Documents;
+import networking.Client;
+import networking.Server;
 
 public class DBDocumentEditingController extends DatabaseEditingWindowController {
 
@@ -63,18 +69,10 @@ public class DBDocumentEditingController extends DatabaseEditingWindowController
 	ObservableList<String> DocTypesFull = null;
 	ObservableList<DocTypes> DocTypesAll = null;
 	ObservableList<String> DocTypes = null;
+	@FXML
+	TextField choosedDocumentTextField;
 
-	// @Override
-	// public void add(ActionEvent actionevent) {
-	// }
-	//
-	// @Override
-	// public void edit() {
-	// }
-	//
-	// @Override
-	// public void delete() {
-	// }
+	File file = null;
 
 	@FXML
 	public void initialize() {
@@ -122,6 +120,18 @@ public class DBDocumentEditingController extends DatabaseEditingWindowController
 			query.setParameter(5, docInsertedEmployeeTextField.getText());
 			query.executeUpdate();
 			session.getTransaction().commit();
+			Server server = new Server();
+			server.setFILE_NAME(file.getName());
+			Thread serverThread = new Thread(server);
+			serverThread.start();
+			Client client = new Client();
+			try {
+				client.sendFile(file);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			serverThread.stop();
 			parentController.initialize();
 			parentController.DBDocumentTable.refresh();
 			okButton.getScene().getWindow().hide();
@@ -177,5 +187,15 @@ public class DBDocumentEditingController extends DatabaseEditingWindowController
 
 	public void closeDBEmployeeWindow(ActionEvent actionEvent) {
 		((Node) actionEvent.getSource()).getScene().getWindow().hide();
+	}
+
+	@FXML
+	public void choosedDocument(ActionEvent event) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Выбор документа для добавления");
+		Window window = ((Node) event.getSource()).getScene().getWindow();
+		file = fileChooser.showOpenDialog(window);
+		System.out.println(file.length());
+		choosedDocumentTextField.setText(file.getAbsolutePath());
 	}
 }
