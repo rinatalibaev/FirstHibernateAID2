@@ -58,25 +58,16 @@ public class Employee extends Model {
 	@OneToMany(mappedBy = "mailOrdSenderNo")
 	private Set<MailOrder> sender_in_MailOrders = new HashSet<MailOrder>();
 
+	@OneToMany(mappedBy = "docInsertedEmployee")
+	private Set<Documents> insertedEmployeeSurname_in_Documents = new HashSet<Documents>();
+
 	public Employee() {
 
 	}
 
-	// public int getId() {
-	// return id;
-	// }
-	//
-	// public void setId(int id) {
-	// this.id = id;
-	// }
-
 	public String getEmpSurname() {
 		return empSurname;
 	}
-
-	// public SimpleStringProperty EmpSurname() {
-	// return empSurname;
-	// }
 
 	public String getEmpFirstname() {
 		return empFirstname;

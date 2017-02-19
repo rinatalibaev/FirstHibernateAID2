@@ -1,7 +1,10 @@
 package models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -9,9 +12,6 @@ import javax.persistence.Table;
 public class Documents extends Model {
 
 	private static final long serialVersionUID = -3489222817012355083L;
-
-	@Column
-	private String docType;
 
 	@Column
 	private String docDate;
@@ -23,14 +23,21 @@ public class Documents extends Model {
 	private String docName;
 
 	@Column
-	private String docStatus;
+	private String docServerPath;
 
-	@Column
-	private String docInsertedEmployee;
+	@ManyToOne
+	@JoinColumn(name = "docType")
+	private DocTypes docType;
 
-	public String getDocType() {
-		return docType;
-	}
+	@ManyToOne
+	@JoinColumn(name = "docInsertedEmployee")
+	private Employee docInsertedEmployee;
+
+	@ManyToOne(cascade = { CascadeType.REFRESH })
+	@JoinColumn(name = "DocStatusName")
+	private DocStatuses DocStatusName;
+
+	//////////////////////
 
 	public String getDocDate() {
 		return docDate;
@@ -44,36 +51,67 @@ public class Documents extends Model {
 		return docName;
 	}
 
-	public String getDocStatus() {
-		return docStatus;
+	public String getDocServerPath() {
+		return docServerPath;
 	}
 
-	public String getDocInsertedEmployee() {
+	////////////////////////////////
+
+	public DocTypes getDocType() {
+		return docType;
+	}
+
+	public DocStatuses getDocStatus() {
+		return DocStatusName;
+	}
+
+	public Employee getDocInsertedEmployee() {
 		return docInsertedEmployee;
 	}
 
-	public void setDocType(String docType) {
+	//////////////////////////////////
+
+	public String getDocTypeName() {
+		return docType.getDocTypeName();
+	}
+
+	public String getDocInsertedEmployeeSurname() {
+		return docInsertedEmployee.getEmpSurname();
+	}
+
+	public String getDocStatusName() {
+		return DocStatusName.getDocStatusName();
+	}
+
+	public void setDocServerPath(String docServerPath) {
+		this.docServerPath = docServerPath;
+	}
+	/////////////////////////////
+
+	public void setDocStatusName(DocStatuses docStatusName) {
+		this.DocStatusName = docStatusName;
+	}
+
+	public void setDocType(DocTypes docType) {
 		this.docType = docType;
+	}
+
+	public void setDocInsertedEmployee(Employee docInsertedEmployee) {
+		this.docInsertedEmployee = docInsertedEmployee;
+	}
+
+	////////////////////////////
+
+	public void setDocInsertedDate(String docInsertedDate) {
+		this.docInsertedDate = docInsertedDate;
 	}
 
 	public void setDocDate(String docDate) {
 		this.docDate = docDate;
 	}
 
-	public void setDocInsertedDate(String docInsertedDate) {
-		this.docInsertedDate = docInsertedDate;
-	}
-
 	public void setDocName(String docName) {
 		this.docName = docName;
-	}
-
-	public void setDocStatus(String docStatus) {
-		this.docStatus = docStatus;
-	}
-
-	public void setDocInsertedEmployee(String docInsertedEmployee) {
-		this.docInsertedEmployee = docInsertedEmployee;
 	}
 
 	@Override

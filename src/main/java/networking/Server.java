@@ -1,11 +1,17 @@
 package networking;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Server implements Runnable {
 
@@ -13,6 +19,9 @@ public class Server implements Runnable {
 	private static String FILE_TO_RECEIVED = "c:/temp/";
 	private static String FILE_NAME = null;
 	private static int FILE_SIZE = 2097152; // file size temporary hard
+	private String FileToSend = null;
+	private String serverMethod = null;
+	private String FileToDelete = null;
 	// coded
 	// should bigger than the
 	// file to be downloaded
@@ -51,6 +60,8 @@ public class Server implements Runnable {
 			bufferedOutputStream.flush();
 
 		} finally {
+			FILE_TO_RECEIVED = "c:/temp/";
+			FILE_NAME = null;
 			if (fileOutputStream != null)
 				fileOutputStream.close();
 			if (bufferedOutputStream != null)
@@ -89,11 +100,93 @@ public class Server implements Runnable {
 	@Override
 	public void run() {
 		try {
-			receive();
+			if (serverMethod.equals("receive")) {
+				receive();
+			}
+			if (serverMethod.equals("sendFile") && FileToSend != null) {
+				sendFile(new File(FileToSend));
+			}
+			if (serverMethod.equals("deleteFile")) {
+				deleteFile();
+			}
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	public String getFileToSend() {
+		return FileToSend;
+	}
+
+	public String getServerMethod() {
+		return serverMethod;
+	}
+
+	public void setFileToSend(String fileToSend) {
+		FileToSend = fileToSend;
+	}
+
+	public void setServerMethod(String serverMethod) {
+		this.serverMethod = serverMethod;
+	}
+
+	public void sendFile(File file) {
+		ServerSocket servsock = null;
+		Socket sock = null;
+		FileInputStream fis = null;
+		BufferedInputStream bis = null;
+		OutputStream os = null;
+		try {
+			servsock = new ServerSocket(SOCKET_PORT);
+			System.out.println("Waiting for connection...");
+			sock = servsock.accept();
+			// send file
+			// File myFile = new File(fileToSend);
+			byte[] mybytearray = new byte[(int) file.length()];
+			fis = new FileInputStream(file);
+			bis = new BufferedInputStream(fis);
+			bis.read(mybytearray, 0, mybytearray.length);
+			os = sock.getOutputStream();
+			System.out.println("Sending " + file + "(" + mybytearray.length + " bytes)");
+			System.out.println("File " + file + " uploaded (" + mybytearray.length + " bytes)");
+			os.write(mybytearray, 0, mybytearray.length);
+			os.flush();
+			System.out.println("Done.");
+		} catch (IOException io) {
+			io.printStackTrace();
+		} finally {
+			try {
+				if (bis != null)
+					bis.close();
+				if (os != null)
+					os.close();
+				if (sock != null)
+					sock.close();
+				if (servsock != null)
+					servsock.close();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+		}
+	}
+
+	private void deleteFile() {
+		try {
+			Files.deleteIfExists(Paths.get(FileToDelete));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public String getFileToDelete() {
+		return FileToDelete;
+	}
+
+	public void setFileToDelete(String fileToDelete) {
+		FileToDelete = fileToDelete;
+	}
 }

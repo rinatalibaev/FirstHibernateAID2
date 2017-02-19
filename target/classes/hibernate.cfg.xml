@@ -12,6 +12,7 @@
 		<mapping class="models.Employee"/>
 		<mapping class="models.Documents"/>
 		<mapping class="models.DocTypes"/>
+		<mapping class="models.DocStatuses"/>
 		<mapping class="models.MailOrder"/>
 		<mapping class="models.MailOrderStatuses"/>
 	</session-factory>

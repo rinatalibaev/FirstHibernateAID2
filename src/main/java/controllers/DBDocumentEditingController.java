@@ -1,14 +1,15 @@
 package controllers;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
 import java.time.LocalDateTime;
 
 import javax.persistence.TransactionRequiredException;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
@@ -21,12 +22,15 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import models.DocStatuses;
 import models.DocTypes;
 import models.Documents;
+import models.Employee;
 import networking.Client;
 import networking.Server;
 
@@ -41,53 +45,59 @@ public class DBDocumentEditingController extends DatabaseEditingWindowController
 	@FXML
 	ComboBox<String> docTypeComboBox = new ComboBox<String>();
 	@FXML
+	ComboBox<String> docStatusComboBox = new ComboBox<String>();
+	@FXML
+	ComboBox<String> docInsertedEmployeeComboBox = new ComboBox<String>();
+	@FXML
 	DatePicker docDateDatePicker;
 	@FXML
 	TextField docInsertedDateTextField;
 	@FXML
-	TextField docNameTextField;
+	Label docInsertDateLabel;
 	@FXML
-	TextField docStatusTextField;
+	TextField docNameTextField;
 	@FXML
 	TextField docInsertedEmployeeTextField;
 	@FXML
-	TextField z1TextField;
-	@FXML
-	TextField z2TextField;
-	@FXML
-	TextField z3TextField;
-	@FXML
-	TextField z4TextField;
-	@FXML
-	TextField z5TextField;
-	@FXML
-	TextField z6TextField;
-
+	TextField choosedDocumentTextField;
 	@FXML
 	Button okButton;
+	@FXML
+	Button docChooseButton;
+	File file = null;
 
 	ObservableList<String> DocTypesFull = null;
 	ObservableList<DocTypes> DocTypesAll = null;
-	ObservableList<String> DocTypes = null;
-	@FXML
-	TextField choosedDocumentTextField;
-
-	File file = null;
+	ObservableList<String> DocStatusesFull = null;
+	ObservableList<DocStatuses> DocStatusesAll = null;
+	ObservableList<String> DocInsertedEmployeeFull = null;
+	ObservableList<Employee> DocInsertedEmployeeAll = null;
 
 	@FXML
 	public void initialize() {
 		try {
 			Session session = sessionExtracting();
-			Criteria criteria = session.createCriteria(DocTypes.class);
-			System.out.println(criteria.list().size());
-			DocTypesFull = FXCollections.observableList(criteria.list());
+			Criteria criteriaDocTypes = session.createCriteria(DocTypes.class);
+			Criteria criteriaDocStatuses = session.createCriteria(DocStatuses.class);
+			Criteria criteriaInsertedEmployee = session.createCriteria(Employee.class);
+			DocTypesFull = FXCollections.observableList(criteriaDocTypes.list());
+			DocStatusesFull = FXCollections.observableList(criteriaDocStatuses.list());
+			DocInsertedEmployeeFull = FXCollections.observableList(criteriaInsertedEmployee.list());
 			for (int i = 0; i < DocTypesFull.size(); i++) {
-				DocTypesFull.set(i, ((DocTypes) criteria.list().get(i)).getDocTypeName());
-				System.out.println(DocTypesFull.get(i));
+				DocTypesFull.set(i, ((DocTypes) criteriaDocTypes.list().get(i)).getDocTypeName());
 			}
-			DocTypes = DocTypesFull;
-			DocTypesAll = FXCollections.observableList(criteria.list());
-			docTypeComboBox.setItems(DocTypes);
+			for (int i = 0; i < DocStatusesFull.size(); i++) {
+				DocStatusesFull.set(i, ((DocStatuses) criteriaDocStatuses.list().get(i)).getDocStatusName());
+			}
+			for (int i = 0; i < DocInsertedEmployeeFull.size(); i++) {
+				DocInsertedEmployeeFull.set(i, ((Employee) criteriaInsertedEmployee.list().get(i)).getEmpSurname());
+			}
+			DocTypesAll = FXCollections.observableList(criteriaDocTypes.list());
+			DocStatusesAll = FXCollections.observableList(criteriaDocStatuses.list());
+			DocInsertedEmployeeAll = FXCollections.observableList(criteriaInsertedEmployee.list());
+			docTypeComboBox.setItems(DocTypesFull);
+			docStatusComboBox.setItems(DocStatusesFull);
+			docInsertedEmployeeComboBox.setItems(DocInsertedEmployeeFull);
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -100,38 +110,59 @@ public class DBDocumentEditingController extends DatabaseEditingWindowController
 
 	public void add(Event mouseEvent) {
 		Session session = sessionExtracting();
-
+		String docServerPath = null;
 		try {
 			session.beginTransaction();
-			String sql = "INSERT INTO documents (DocType, DocDate, DocInsertedDate, DocName, DocStatus, DocInsertedEmployee) VALUES (?,?,?,?,?,?)";
+			String sql = "INSERT INTO documents (DocType, DocDate, DocInsertedDate, DocName, docServerPath, DocStatusName, DocInsertedEmployee) VALUES (?,?,?,?,?,?,?)";
 			SQLQuery query = session.createSQLQuery(sql);
-			int id = 777;
+			int docType = 777;
 			for (int i = 0; i < DocTypesAll.size(); i++) {
 				if (((DocTypes) DocTypesAll.get(i)).getDocTypeName() == docTypeComboBox.getValue()) {
-					id = i;
+					docType = DocTypesAll.get(i).getId();
 					break;
 				}
 			}
-			query.setParameter(0, id);
-			query.setParameter(1, docDateDatePicker.getValue());
-			query.setParameter(2, LocalDateTime.now());
-			query.setParameter(3, docNameTextField.getText());
-			query.setParameter(4, docStatusTextField.getText());
-			query.setParameter(5, docInsertedEmployeeTextField.getText());
-			query.executeUpdate();
-			session.getTransaction().commit();
+			int docStatus = 777;
+			for (int i = 0; i < DocStatusesAll.size(); i++) {
+				if (((DocStatuses) DocStatusesAll.get(i)).getDocStatusName() == docStatusComboBox.getValue()) {
+					docStatus = DocStatusesAll.get(i).getId();
+					break;
+				}
+			}
+			int docInsertedEmployee = 777;
+			for (int i = 0; i < DocInsertedEmployeeAll.size(); i++) {
+				if (((Employee) DocInsertedEmployeeAll.get(i)).getEmpSurname() == docInsertedEmployeeComboBox.getValue()) {
+					docInsertedEmployee = DocInsertedEmployeeAll.get(i).getId();
+					break;
+				}
+			}
+
 			Server server = new Server();
 			server.setFILE_NAME(file.getName());
+			server.setServerMethod("receive");
 			Thread serverThread = new Thread(server);
 			serverThread.start();
 			Client client = new Client();
 			try {
 				client.sendFile(file);
+				docServerPath = server.getFILE_TO_RECEIVED();
+				file = null;
+				client = null;
+				server = null;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			serverThread.stop();
+
+			query.setParameter(0, docType);
+			query.setParameter(1, docDateDatePicker.getValue());
+			query.setParameter(2, LocalDateTime.now());
+			query.setParameter(3, docNameTextField.getText());
+			query.setParameter(4, docServerPath);
+			query.setParameter(5, docStatus);
+			query.setParameter(6, docInsertedEmployee);
+			query.executeUpdate();
+			// serverThread.stop();
+			session.getTransaction().commit();
 			parentController.initialize();
 			parentController.DBDocumentTable.refresh();
 			okButton.getScene().getWindow().hide();
@@ -143,19 +174,30 @@ public class DBDocumentEditingController extends DatabaseEditingWindowController
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public void update() {
 		Session session = sessionExtracting();
+		// document.getDocStatus().setDocStatusName(docStatusComboBox.getValue());
 
 		try {
 			session.beginTransaction();
-			String hql = "UPDATE Documents set DocType = :DocType, DocDate = :DocDate, DocInsertedDate = :DocInsertedDate, DocName = :DocName, DocStatus = :DocStatus, DocInsertedEmployee = :DocInsertedEmployee WHERE id = :document_id";
-			Query query = session.createQuery(hql);
-			query.setParameter("DocType", docTypeComboBox.getValue());
-			query.setParameter("DocDate", docDateDatePicker.getPromptText());
-			query.setParameter("DocInsertedDate", docInsertedDateTextField.getText());
-			query.setParameter("DocName", docNameTextField.getText());
-			query.setParameter("DocStatus", docStatusTextField.getText());
-			query.setParameter("DocInsertedEmployee", docInsertedEmployeeTextField.getText());
+			String sql = "UPDATE documents set docStatusName = :DocStatusName WHERE id = :document_id";
+			SQLQuery query = session.createSQLQuery(sql);
+			int docStatus = 777;
+			for (int i = 0; i < DocStatusesAll.size(); i++) {
+				if (((DocStatuses) DocStatusesAll.get(i)).getDocStatusName() == docStatusComboBox.getValue()) {
+					docStatus = DocStatusesAll.get(i).getId();
+					break;
+				}
+			}
+			// query.setParameter("DocType", docTypeComboBox.getValue());
+			// query.setParameter("DocDate", docDateDatePicker.getPromptText());
+			// query.setParameter("DocInsertedDate",
+			// docInsertedDateTextField.getText());
+			// query.setParameter("DocName", docNameTextField.getText());
+			query.setParameter("DocStatusName", docStatus);
+			// query.setParameter("DocInsertedEmployee",
+			// docInsertedEmployeeComboBox.getValue());
 			query.setParameter("document_id", document.getId());
 			query.executeUpdate();
 			session.getTransaction().commit();
@@ -173,12 +215,12 @@ public class DBDocumentEditingController extends DatabaseEditingWindowController
 	public void setDocument(Documents selectedDocument) {
 		System.out.println("In setDocument()");
 		document = selectedDocument;
-		docTypeComboBox.setValue(selectedDocument.getDocType());
+		docTypeComboBox.setValue(selectedDocument.getDocType().getDocTypeName());
 		docDateDatePicker.setPromptText(selectedDocument.getDocDate());
 		docInsertedDateTextField.setText(selectedDocument.getDocInsertedDate());
 		docNameTextField.setText(selectedDocument.getDocName());
-		docStatusTextField.setText(selectedDocument.getDocStatus());
-		docInsertedEmployeeTextField.setText(selectedDocument.getDocInsertedEmployee());
+		docStatusComboBox.setValue(selectedDocument.getDocStatus().getDocStatusName());
+		docInsertedEmployeeComboBox.setValue((selectedDocument.getDocInsertedEmployee().getEmpSurname()));
 	}
 
 	@FXML
@@ -191,11 +233,46 @@ public class DBDocumentEditingController extends DatabaseEditingWindowController
 
 	@FXML
 	public void choosedDocument(ActionEvent event) {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Выбор документа для добавления");
-		Window window = ((Node) event.getSource()).getScene().getWindow();
-		file = fileChooser.showOpenDialog(window);
-		System.out.println(file.length());
-		choosedDocumentTextField.setText(file.getAbsolutePath());
+		if (docChooseButton.getText().equals("Выбрать")) {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Выбор документа для добавления");
+			Window window = ((Node) event.getSource()).getScene().getWindow();
+			file = fileChooser.showOpenDialog(window);
+			if (file != null) {
+				System.out.println(file.length());
+				choosedDocumentTextField.setText(file.getAbsolutePath());
+			}
+		}
+		if (docChooseButton.getText() == "Открыть") {
+			File file = null;
+			Desktop desktop = Desktop.getDesktop();
+			Server server = new Server();
+			Socket sock = null;
+			server.setServerMethod("sendFile");
+			server.setFileToSend(choosedDocumentTextField.getText());
+			Thread serverThread = new Thread(server);
+			serverThread.start();
+			Client client = new Client();
+			try {
+				file = new File(client.receiveFile((new File(choosedDocumentTextField.getText()).getName())));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				desktop.open(file);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// try {
+			// desktop.open(file);
+			// } catch (IOException e) {
+			// e.printStackTrace();
+			// }
+
+		}
+		System.out.println(docChooseButton.getText());
+
 	}
 }

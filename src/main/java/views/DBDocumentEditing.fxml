@@ -5,9 +5,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" prefHeight="407.0" prefWidth="472.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DBDocumentEditingController">
+<VBox maxHeight="-Infinity" prefHeight="356.0" prefWidth="476.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DBDocumentEditingController">
    <children>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="362.0" prefWidth="476.0">
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="331.0" prefWidth="476.0">
          <children>
             <AnchorPane prefHeight="362.0" prefWidth="242.0">
                <children>
@@ -15,62 +15,37 @@
                      <children>
                         <Label text="Тип документа">
                            <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                              <Insets bottom="14.0" left="10.0" top="14.0" />
                            </VBox.margin>
                         </Label>
                         <Label text="Дата документа">
                            <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label text="Дата добавления документа">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="14.0" left="10.0" top="14.0" />
                            </VBox.margin>
                         </Label>
                         <Label text="Название документа">
                            <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="14.0" left="10.0" top="14.0" />
                            </VBox.margin>
                         </Label>
                         <Label text="Документ">
                            <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="14.0" left="10.0" top="14.0" />
                            </VBox.margin>
                         </Label>
                         <Label text="Статус документа">
                            <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="14.0" left="10.0" top="14.0" />
                            </VBox.margin>
                         </Label>
                         <Label text="Добавил документ">
                            <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="14.0" left="10.0" top="14.0" />
                            </VBox.margin>
                         </Label>
-                        <Label text="Запас2">
+                        <Label fx:id="docInsertDateLabel" text="Дата добавления документа">
                            <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label text="Запас3">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label text="Запас4">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label text="Запас5">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label text="Запас6">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="14.0" left="10.0" top="14.0" />
                            </VBox.margin>
                         </Label>
                      </children>
@@ -83,66 +58,49 @@
                      <children>
                         <ComboBox fx:id="docTypeComboBox" prefHeight="25.0" prefWidth="297.0">
                            <VBox.margin>
-                              <Insets top="7.0" />
+                              <Insets bottom="10.0" top="10.0" />
                            </VBox.margin>
                         </ComboBox>
-                        <DatePicker fx:id="docDateDatePicker" prefHeight="25.0" prefWidth="296.0" />
-                        <TextField fx:id="docInsertedDateTextField" editable="false">
+                        <DatePicker fx:id="docDateDatePicker" prefHeight="25.0" prefWidth="296.0">
                            <VBox.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </VBox.margin>
-                        </TextField>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin></DatePicker>
                         <TextField fx:id="docNameTextField">
                            <VBox.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                              <Insets bottom="10.0" left="1.0" right="1.0" top="10.0" />
                            </VBox.margin>
                         </TextField>
                         <HBox prefHeight="25.0" prefWidth="200.0">
                            <children>
                               <TextField fx:id="choosedDocumentTextField" prefHeight="25.0" prefWidth="226.0">
                                  <HBox.margin>
-                                    <Insets />
+                                    <Insets bottom="10.0" top="10.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Button mnemonicParsing="false" onAction="#choosedDocument" prefHeight="25.0" prefWidth="70.0" text="Выбрать" />
+                              <Button fx:id="docChooseButton" mnemonicParsing="false" onAction="#choosedDocument" prefHeight="25.0" prefWidth="70.0" text="Выбрать">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </HBox.margin></Button>
                            </children>
                         </HBox>
-                        <TextField fx:id="docStatusTextField">
+                        <ComboBox fx:id="docStatusComboBox" prefHeight="25.0" prefWidth="297.0">
                            <VBox.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin></ComboBox>
+                        <ComboBox fx:id="docInsertedEmployeeComboBox" prefHeight="25.0" prefWidth="297.0">
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
                            </VBox.margin>
-                        </TextField>
-                        <TextField fx:id="docInsertedEmployeeTextField">
+                        </ComboBox>
+                        <TextField fx:id="docInsertedDateTextField" editable="false">
                            <VBox.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <TextField fx:id="z2TextField">
-                           <VBox.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <TextField fx:id="z3TextField">
-                           <VBox.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <TextField fx:id="z4TextField">
-                           <VBox.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <TextField fx:id="z5TextField">
-                           <VBox.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <TextField fx:id="z6TextField">
-                           <VBox.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                              <Insets bottom="10.0" left="1.0" right="1.0" top="10.0" />
                            </VBox.margin>
                         </TextField>
                      </children>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
                   </VBox>
                </children>
             </AnchorPane>
