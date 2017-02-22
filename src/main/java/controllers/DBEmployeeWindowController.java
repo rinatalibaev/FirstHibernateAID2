@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -178,9 +177,5 @@ public class DBEmployeeWindowController extends DatabaseViewingWindowController 
 		selectedEmployee.delete(delete_hql_query);
 		initialize();
 		DBEmpTable.refresh();
-	}
-
-	public void closeDBEmployeeWindow(ActionEvent actionEvent) {
-		((Node) actionEvent.getSource()).getScene().getWindow().hide();
 	}
 }

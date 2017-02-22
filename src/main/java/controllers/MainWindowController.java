@@ -119,4 +119,14 @@ public class MainWindowController extends WindowController {
 			e.printStackTrace();
 		}
 	}
+
+	@FXML
+	public void openDBMailOrders(MouseEvent event) {
+		DBMailOrdersController dbMailOrdersController = new DBMailOrdersController();
+		try {
+			dbMailOrdersController.start(new Stage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

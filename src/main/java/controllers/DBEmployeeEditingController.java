@@ -6,10 +6,8 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -153,13 +151,8 @@ public class DBEmployeeEditingController extends DatabaseEditingWindowController
 		empOfficeTextField.setText(selectedEmployee.getEmpOffice());
 	}
 
-	@FXML
-	public void close(ActionEvent event) {
-
-	}
-
-	public void closeDBEmployeeWindow(ActionEvent actionEvent) {
-		((Node) actionEvent.getSource()).getScene().getWindow().hide();
-	}
+	// public void closeDBEmployeeWindow(ActionEvent actionEvent) {
+	// ((Node) actionEvent.getSource()).getScene().getWindow().hide();
+	// }
 
 }

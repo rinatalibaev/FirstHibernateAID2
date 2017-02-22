@@ -8,14 +8,13 @@ import org.hibernate.SessionFactory;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -47,6 +46,9 @@ public class DBDocumentWindowController extends DatabaseViewingWindowController 
 	TableColumn<Documents, String> DBDocumentTableColumn6;
 
 	private String delete_hql_query = "DELETE FROM Documents WHERE id = :id";
+
+	@FXML
+	Button okButton;
 
 	@FXML
 	public void initialize() {
@@ -163,9 +165,5 @@ public class DBDocumentWindowController extends DatabaseViewingWindowController 
 		server.setServerMethod("deleteFile");
 		Thread thread = new Thread(server);
 		thread.start();
-	}
-
-	public void closeDBEmployeeWindow(ActionEvent actionEvent) {
-		((Node) actionEvent.getSource()).getScene().getWindow().hide();
 	}
 }

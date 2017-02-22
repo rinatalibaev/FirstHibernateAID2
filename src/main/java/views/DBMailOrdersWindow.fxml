@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="289.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DBMailOrdersController">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <TableView fx:id="DBMailOrderTable" prefHeight="233.0" prefWidth="580.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+              <columns>
+                <TableColumn fx:id="DBMailOrdTableId" prefWidth="75.0" text="Номер" />
+                <TableColumn fx:id="DBMailOrdTableColumn1" prefWidth="75.0" text="Статус" />
+                  <TableColumn fx:id="DBMailOrdTableColumn2" prefWidth="75.0" text="Отправитель" />
+                  <TableColumn fx:id="DBMailOrdTableColumn3" prefWidth="75.0" text="Получатель" />
+                  <TableColumn fx:id="DBMailOrdTableColumn4" prefWidth="75.0" text="Дата отправления" />
+                  <TableColumn fx:id="DBMailOrdTableColumn5" prefWidth="75.0" text="Дата создания заявки" />
+                  <TableColumn fx:id="DBMailOrdTableColumn6" prefWidth="75.0" text="Заявленная дата отправления" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="47.0" prefWidth="600.0">
+         <children>
+            <HBox prefHeight="25.0" prefWidth="243.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#addingEntry" prefHeight="25.0" prefWidth="80.0" text="Добавить">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Изменить">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="73.0" text="Удалить" />
+               </children>
+            </HBox>
+            <Button mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="64.0" text="ОК" AnchorPane.rightAnchor="78.0" AnchorPane.topAnchor="10.0" />
+            <Button cancelButton="true" mnemonicParsing="false" onAction="#close" text="Отмена" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

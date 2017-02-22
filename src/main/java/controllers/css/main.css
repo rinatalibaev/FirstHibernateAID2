@@ -1,0 +1,8 @@
+.root {
+	/*-fx-background-color: #dddddd;*/
+}
+.hrefs:hover {
+	-fx-underline: true;
+	-fx-cursor: hand;
+	-fx-text-fill: #007cbd;
+}
