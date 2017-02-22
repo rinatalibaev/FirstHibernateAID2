@@ -99,6 +99,10 @@ public class DBMailOrdersController extends DatabaseViewingWindowController {
 			fxmlEdit = fxmlLoader.load();
 			dbMailOrdersEditing = fxmlLoader.getController();
 			dbMailOrdersEditing.parentController = this;
+			dbMailOrdersEditing.sentDateDatePicker.setVisible(false);
+			dbMailOrdersEditing.createDateDatePicker.setVisible(false);
+			dbMailOrdersEditing.mailOrderInsertDateLabel.setVisible(false);
+			dbMailOrdersEditing.mailOrderSentDateLabel.setVisible(false);
 			dbMailOrdersEditing.okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
@@ -123,4 +127,10 @@ public class DBMailOrdersController extends DatabaseViewingWindowController {
 		stageBuilder("../views/DBMailOrdersWindow.fxml", 1100, 285, "АС административного сопровождения - База данных - Заказы курьера", 1100, 285, 125, 200);
 	}
 
+	public void DBMailOrderDeleting() {
+		MailOrder selectedDocument = (MailOrder) DBMailOrderTable.getSelectionModel().getSelectedItem();
+		selectedDocument.delete(delete_hql_query);
+		initialize();
+		DBMailOrderTable.refresh();
+	}
 }

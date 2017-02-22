@@ -49,4 +49,10 @@ public class MailOrderStatuses extends Model {
 	public void setMailOrders_with_status(Set<MailOrder> mailOrders_with_status) {
 		this.mailOrders_with_status = mailOrders_with_status;
 	}
+
+	@Override
+	public String toString() {
+		return MailOrderStatus;
+
+	}
 }

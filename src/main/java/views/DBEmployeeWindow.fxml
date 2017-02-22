@@ -61,8 +61,8 @@
                   </Button>
                </children>
             </HBox>
-            <Button mnemonicParsing="false" onAction="#closeDBEmployeeWindow" prefHeight="25.0" prefWidth="58.0" text="ОК" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="10.0" />
-            <Button cancelButton="true" mnemonicParsing="false" onAction="#closeDBEmployeeWindow" text="Отмена" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+            <Button mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="58.0" text="ОК" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="10.0" />
+            <Button cancelButton="true" mnemonicParsing="false" onAction="#close" text="Отмена" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
          </children>
          <VBox.margin>
             <Insets />

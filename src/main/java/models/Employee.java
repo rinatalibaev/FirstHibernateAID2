@@ -185,9 +185,17 @@ public class Employee extends Model {
 		this.sender_in_MailOrders = sender_in_MailOrders;
 	}
 
-	@Override
+	// @Override
+	// public String toString() {
+	// return super.getId() + " | " + getEmpSurname() + " | " +
+	// getEmpFirstname() + " | " + getEmpFathername() + " | " + getEmpCity() + "
+	// | " + getEmpEmail() + " | " + getEmpHouse() + " | " + getEmpOffice() + "
+	// | " + getEmpPhone() + " | "
+	// + getEmpPosition() + " | " + getEmpRegion() + " | " + getEmpStreet() + "
+	// | " + getEmpPhoneAdditionalDigits() + " | " + getEmpHousePart();
+	// }
+
 	public String toString() {
-		return super.getId() + " | " + getEmpSurname() + " | " + getEmpFirstname() + " | " + getEmpFathername() + " | " + getEmpCity() + " | " + getEmpEmail() + " | " + getEmpHouse() + " | " + getEmpOffice() + " | " + getEmpPhone() + " | "
-				+ getEmpPosition() + " | " + getEmpRegion() + " | " + getEmpStreet() + " | " + getEmpPhoneAdditionalDigits() + " | " + getEmpHousePart();
+		return getEmpSurname() + " " + getEmpFirstname();
 	}
 }

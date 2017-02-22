@@ -55,15 +55,16 @@
                   </VBox>
                   <VBox prefHeight="44.0" prefWidth="190.0" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="10.0">
                      <children>
-                        <Label text="Дата отправления">
+                        <Label text="Желаемая дата отправления">
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin>
                         </Label>
-                        <DatePicker fx:id="sentDateDatePicker" prefHeight="25.0" prefWidth="170.0">
+                        <DatePicker fx:id="toSendDateDatePicker" prefHeight="25.0" prefWidth="170.0">
                            <VBox.margin>
                               <Insets left="10.0" />
-                           </VBox.margin></DatePicker>
+                           </VBox.margin>
+                        </DatePicker>
                      </children>
                   </VBox>
                </children>
@@ -94,18 +95,18 @@
                <children>
                   <VBox prefHeight="44.0" prefWidth="190.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label fx:id="docInsertDateLabel" text="Дата оформления заказа" />
+                        <Label fx:id="mailOrderInsertDateLabel" text="Дата оформления заказа" />
                         <DatePicker fx:id="createDateDatePicker" prefHeight="25.0" prefWidth="190.0" />
                      </children>
                   </VBox>
                   <VBox prefHeight="44.0" prefWidth="190.0" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label text="Заявленная дата отправления">
+                        <Label fx:id="mailOrderSentDateLabel" text="Дата отправления">
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin>
                         </Label>
-                        <DatePicker fx:id="toSendDateDatePicker" prefHeight="25.0" prefWidth="190.0">
+                        <DatePicker fx:id="sentDateDatePicker" prefHeight="25.0" prefWidth="190.0">
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin>

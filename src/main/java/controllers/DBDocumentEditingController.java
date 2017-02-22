@@ -90,7 +90,7 @@ public class DBDocumentEditingController extends DatabaseEditingWindowController
 				DocStatusesFull.set(i, ((DocStatuses) criteriaDocStatuses.list().get(i)).getDocStatusName());
 			}
 			for (int i = 0; i < DocInsertedEmployeeFull.size(); i++) {
-				DocInsertedEmployeeFull.set(i, ((Employee) criteriaInsertedEmployee.list().get(i)).getEmpSurname());
+				DocInsertedEmployeeFull.set(i, ((Employee) criteriaInsertedEmployee.list().get(i)).toString());
 			}
 			DocTypesAll = FXCollections.observableList(criteriaDocTypes.list());
 			DocStatusesAll = FXCollections.observableList(criteriaDocStatuses.list());
