@@ -57,7 +57,8 @@ public class Employee extends Model {
 	private Set<MailOrder> receiver_in_MailOrders = new HashSet<MailOrder>();
 	@OneToMany(mappedBy = "mailOrdSenderNo")
 	private Set<MailOrder> sender_in_MailOrders = new HashSet<MailOrder>();
-
+	@OneToMany(mappedBy = "mailOrdEndReceiverNo")
+	private Set<MailOrder> endReceiver_in_MailOrders = new HashSet<MailOrder>();
 	@OneToMany(mappedBy = "docInsertedEmployee")
 	private Set<Documents> insertedEmployeeSurname_in_Documents = new HashSet<Documents>();
 
