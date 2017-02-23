@@ -155,6 +155,42 @@ public class DBDocumentWindowController extends DatabaseViewingWindowController 
 		}
 	}
 
+	public void editingEntry(Documents document) {
+		System.out.println("First line in DBDocumentEditing()");
+		Documents selectedDocument = document;
+		// Window parentWindow = ((Node)
+		// event.getSource()).getScene().getWindow();
+		System.out.println("Before try in DBDocumentEditing()");
+
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			Stage stage = new Stage();
+			Scene scene = null;
+			DBDocumentEditingController dbDocumentEditingController;
+			Parent fxmlEdit;
+			fxmlLoader.setLocation(getClass().getResource("../views/DBDocumentEditing.fxml"));
+			fxmlEdit = fxmlLoader.load();
+			dbDocumentEditingController = fxmlLoader.getController();
+			dbDocumentEditingController.parentController = this;
+			dbDocumentEditingController.docInsertedDateTextField.setDisable(true);
+			dbDocumentEditingController.docInsertedEmployeeComboBox.setDisable(true);
+			dbDocumentEditingController.docTypeComboBox.setDisable(true);
+			dbDocumentEditingController.docNameTextField.setDisable(true);
+			dbDocumentEditingController.docDateDatePicker.setDisable(true);
+			dbDocumentEditingController.choosedDocumentTextField.setText(selectedDocument.getDocServerPath());
+			dbDocumentEditingController.choosedDocumentTextField.setDisable(true);
+			dbDocumentEditingController.docChooseButton.setText("Открыть");
+			scene = new Scene(fxmlEdit);
+			System.out.println("Before setDocument()");
+			dbDocumentEditingController.setDocument(selectedDocument);
+			stage.setScene(scene);
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void DBDocumentDeleting() {
 		Documents selectedDocument = (Documents) DBDocumentTable.getSelectionModel().getSelectedItem();
 		selectedDocument.delete(delete_hql_query);

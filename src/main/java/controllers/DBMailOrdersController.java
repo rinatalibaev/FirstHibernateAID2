@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -21,6 +22,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import models.Documents;
 import models.MailOrder;
 
 public class DBMailOrdersController extends DatabaseViewingWindowController {
@@ -120,6 +122,75 @@ public class DBMailOrdersController extends DatabaseViewingWindowController {
 
 	@Override
 	public void editingEntry(Event event) {
+		System.out.println("in DBMailOrderWindowController.editingEntry()");
+		MailOrder mailOrder = DBMailOrderTable.getSelectionModel().getSelectedItem();
+		DBMailOrderEditingController dbMailOrderEditingController;
+		Session session = sessionExtracting();
+		session.beginTransaction();
+		// Criteria criteriaEmployee = session.createCriteria(Employee.class);
+		// List<Employee> listEmployee = criteriaEmployee.list();
+		Criteria criteriaDocuments = session.createCriteria(Documents.class);
+		List<Documents> listDocuments = criteriaDocuments.list();
+		Parent panel;
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		fxmlLoader.setLocation(getClass().getResource("../views/DBMailOrderEditing.fxml"));
+		System.out.println("after fxml-loading");
+		try {
+			Stage stage = new Stage();
+			panel = fxmlLoader.load();
+			dbMailOrderEditingController = fxmlLoader.getController();
+			dbMailOrderEditingController.senderComboBox.setValue(mailOrder.getMailOrdSenderNo().toString());
+			dbMailOrderEditingController.receiverComboBox.setValue(mailOrder.getMailOrdReceiverNo().toString());
+			dbMailOrderEditingController.endReceiverComboBox.setValue(mailOrder.getMailOrdEndReceiverNo().toString());
+			dbMailOrderEditingController.toSendDateDatePicker.setValue(mailOrder.getMailOrdToSendDate());
+			ObservableList<Documents> documentList = FXCollections.observableArrayList();
+			String docNumber = "";
+			if (mailOrder.getMailOrdDocuments() != null) {
+				for (int i = 0; i < mailOrder.getMailOrdDocuments().length(); i++) {
+					if (!mailOrder.getMailOrdDocuments().substring(i, i + 1).equals(",")) {
+						System.out.println("in if");
+						docNumber = docNumber + mailOrder.getMailOrdDocuments().substring(i, i + 1);
+						if (i == mailOrder.getMailOrdDocuments().length() - 1) {
+							for (Documents document : listDocuments) {
+								if (document.getId() == Integer.parseInt(docNumber)) {
+									documentList.add(document);
+								}
+							}
+							docNumber = "";
+						}
+					} else {
+						System.out.println("in else");
+						for (Documents document : listDocuments) {
+							if (document.getId() == Integer.parseInt(docNumber)) {
+								documentList.add(document);
+							}
+						}
+						docNumber = "";
+					}
+				}
+			}
+			dbMailOrderEditingController.DBMailOrderDocumentTable.setItems(documentList);
+			dbMailOrderEditingController.DBMailOrderDocumentTable.refresh();
+			dbMailOrderEditingController.DBMailOrderDocumentTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+				@Override
+				public void handle(MouseEvent event) {
+					if (event.getButton().equals(MouseButton.PRIMARY)) {
+						if (event.getClickCount() == 2) {
+							DBDocumentWindowController dbDocumentWindowController = new DBDocumentWindowController();
+							dbDocumentWindowController.editingEntry(dbMailOrderEditingController.DBMailOrderDocumentTable.getSelectionModel().getSelectedItem());
+						}
+					}
+				}
+
+			});
+			Scene scene = new Scene(panel);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

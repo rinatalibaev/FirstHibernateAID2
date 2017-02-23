@@ -33,6 +33,10 @@ public class Documents extends Model {
 	@JoinColumn(name = "docInsertedEmployee")
 	private Employee docInsertedEmployee;
 
+	@ManyToOne
+	@JoinColumn(name = "mailOrdDocuments")
+	private MailOrder mailOrdDocuments;
+
 	@ManyToOne(cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "DocStatusName")
 	private DocStatuses DocStatusName;
@@ -112,6 +116,14 @@ public class Documents extends Model {
 
 	public void setDocName(String docName) {
 		this.docName = docName;
+	}
+
+	public MailOrder getMailOrdDocuments() {
+		return mailOrdDocuments;
+	}
+
+	public void setMailOrdDocuments(MailOrder mailOrdDocuments) {
+		this.mailOrdDocuments = mailOrdDocuments;
 	}
 
 	@Override

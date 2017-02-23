@@ -1,7 +1,7 @@
 package models;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,7 @@ public class MailOrder extends Model {
 	private static final long serialVersionUID = 1L;
 
 	@Column
-	private Date mailOrdToSendDate;
+	private LocalDate mailOrdToSendDate;
 
 	@Column
 	private Timestamp mailOrdSentDate;
@@ -36,6 +36,13 @@ public class MailOrder extends Model {
 	@JoinColumn(name = "mailOrdReceiverNo")
 	private Employee mailOrdReceiverNo;
 
+	@ManyToOne
+	@JoinColumn(name = "mailOrdEndReceiverNo")
+	private Employee mailOrdEndReceiverNo;
+
+	@Column
+	private String mailOrdDocuments;
+
 	public MailOrder() {
 		super();
 	}
@@ -48,7 +55,7 @@ public class MailOrder extends Model {
 		return serialVersionUID;
 	}
 
-	public Date getMailOrdToSendDate() {
+	public LocalDate getMailOrdToSendDate() {
 		return mailOrdToSendDate;
 	}
 
@@ -60,7 +67,7 @@ public class MailOrder extends Model {
 		return mailOrdCreateDate;
 	}
 
-	public void setMailOrdToSendDate(Date mailOrdToSendDate) {
+	public void setMailOrdToSendDate(LocalDate mailOrdToSendDate) {
 		this.mailOrdToSendDate = mailOrdToSendDate;
 	}
 
@@ -95,4 +102,21 @@ public class MailOrder extends Model {
 	public void setMailOrdStatus(MailOrderStatuses mailOrdStatus) {
 		MailOrdStatus = mailOrdStatus;
 	}
+
+	public Employee getMailOrdEndReceiverNo() {
+		return mailOrdEndReceiverNo;
+	}
+
+	public void setMailOrdEndReceiverNo(Employee mailOrdEndReceiverNo) {
+		this.mailOrdEndReceiverNo = mailOrdEndReceiverNo;
+	}
+
+	public String getMailOrdDocuments() {
+		return mailOrdDocuments;
+	}
+
+	public void setMailOrdDocuments(String mailOrdDocuments) {
+		this.mailOrdDocuments = mailOrdDocuments;
+	}
+
 }

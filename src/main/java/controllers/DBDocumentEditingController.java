@@ -108,6 +108,7 @@ public class DBDocumentEditingController extends DatabaseEditingWindowController
 	public void start(Stage primaryStage) throws Exception {
 	}
 
+	@SuppressWarnings("deprecation")
 	public void add(Event mouseEvent) {
 		Session session = sessionExtracting();
 		String docServerPath = null;
@@ -131,7 +132,9 @@ public class DBDocumentEditingController extends DatabaseEditingWindowController
 			}
 			int docInsertedEmployee = 777;
 			for (int i = 0; i < DocInsertedEmployeeAll.size(); i++) {
-				if (((Employee) DocInsertedEmployeeAll.get(i)).getEmpSurname() == docInsertedEmployeeComboBox.getValue()) {
+				System.out.println(((Employee) DocInsertedEmployeeAll.get(i)).toString());
+				System.out.println(docInsertedEmployeeComboBox.getValue());
+				if (((Employee) DocInsertedEmployeeAll.get(i)).toString().equals(docInsertedEmployeeComboBox.getValue())) {
 					docInsertedEmployee = DocInsertedEmployeeAll.get(i).getId();
 					break;
 				}

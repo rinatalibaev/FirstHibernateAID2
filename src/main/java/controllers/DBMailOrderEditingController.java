@@ -86,6 +86,13 @@ public class DBMailOrderEditingController extends DatabaseEditingWindowControlle
 	@FXML
 	public void initialize() {
 		try {
+			id.setCellValueFactory(new PropertyValueFactory<Documents, String>("id"));
+			docType.setCellValueFactory(new PropertyValueFactory<Documents, String>("docTypeName"));
+			docName.setCellValueFactory(new PropertyValueFactory<Documents, String>("docName"));
+			docStatus.setCellValueFactory(new PropertyValueFactory<Documents, String>("docStatusName"));
+			docDate.setCellValueFactory(new PropertyValueFactory<Documents, String>("docDate"));
+			docInsertedDate.setCellValueFactory(new PropertyValueFactory<Documents, String>("docInsertedDate"));
+			docInsertedEmployee.setCellValueFactory(new PropertyValueFactory<Documents, String>("docInsertedEmployeeSurname"));
 			Session session = sessionExtracting();
 			Criteria criteriaEmployees = session.createCriteria(Employee.class);
 			employeeFull = FXCollections.observableList(criteriaEmployees.list());
@@ -107,33 +114,24 @@ public class DBMailOrderEditingController extends DatabaseEditingWindowControlle
 	public void chooseDocument(ActionEvent event) {
 		DBDocumentWindowController dbDocumentWindowController;
 		try {
-			DBMailOrderDocumentTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			Stage stage = new Stage();
 			fxmlLoader.setLocation((getClass().getResource("../views/DBDocumentWindow.fxml")));
 			Parent panel = fxmlLoader.load();
 			dbDocumentWindowController = fxmlLoader.getController();
+			dbDocumentWindowController.DBDocumentTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 			dbDocumentWindowController.okButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
 
 					System.out.println("in handle");
 					if (dbDocumentWindowController.DBDocumentTable.getSelectionModel().getSelectedItems() != null) {
-						id.setCellValueFactory(new PropertyValueFactory<Documents, String>("id"));
-						docType.setCellValueFactory(new PropertyValueFactory<Documents, String>("docTypeName"));
-						docName.setCellValueFactory(new PropertyValueFactory<Documents, String>("docName"));
-						docStatus.setCellValueFactory(new PropertyValueFactory<Documents, String>("docStatusName"));
-						docDate.setCellValueFactory(new PropertyValueFactory<Documents, String>("docDate"));
-						docInsertedDate.setCellValueFactory(new PropertyValueFactory<Documents, String>("docInsertedDate"));
-						docInsertedEmployee.setCellValueFactory(new PropertyValueFactory<Documents, String>("docInsertedEmployeeSurname"));
-
 						if (selectedDocuments == null) {
 							selectedDocuments = dbDocumentWindowController.DBDocumentTable.getSelectionModel().getSelectedItems();
 						} else {
 							selectedDocuments = FXCollections.concat(selectedDocuments, dbDocumentWindowController.DBDocumentTable.getSelectionModel().getSelectedItems());
 						}
 					}
-
 					DBMailOrderDocumentTable.setItems(selectedDocuments);
 					DBMailOrderDocumentTable.refresh();
 					close(event);
@@ -156,16 +154,19 @@ public class DBMailOrderEditingController extends DatabaseEditingWindowControlle
 	public void update(MouseEvent event) {
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void add(Event event) {
 		String documents = "";
 		for (Documents document : DBMailOrderDocumentTable.getItems()) {
+			System.out.println(document.toString());
 			if (documents.equals("")) {
 				documents = String.valueOf((document.getId()));
 			} else {
 				documents = documents + "," + document.getId();
 			}
 		}
+
 		Session session = sessionExtracting();
 		session.beginTransaction();
 		SQLQuery sqlQuery = session.createSQLQuery("INSERT into mailorder (mailOrdSenderNo, mailOrdStatus, mailOrdReceiverNo, mailOrdEndReceiverNo, mailOrdCreateDate, mailOrdToSendDate, mailOrdSentDate, mailOrdDocuments) VALUES (?,?,?,?,?,?,?,?)");
@@ -173,19 +174,19 @@ public class DBMailOrderEditingController extends DatabaseEditingWindowControlle
 		int receiverNo = 0;
 		int endReceiverNo = 0;
 		for (int i = 0; i < employeeFull.size(); i++) {
-			if ((employeeFull.get(i)).toString() == senderComboBox.getValue()) {
+			if ((employeeFull.get(i)).toString().equals(senderComboBox.getValue())) {
 				senderNo = employeeAll.get(i).getId();
 				break;
 			}
 		}
 		for (int i = 0; i < employeeFull.size(); i++) {
-			if ((employeeFull.get(i)).toString() == receiverComboBox.getValue()) {
+			if ((employeeFull.get(i)).toString().equals(receiverComboBox.getValue())) {
 				receiverNo = employeeAll.get(i).getId();
 				break;
 			}
 		}
 		for (int i = 0; i < employeeFull.size(); i++) {
-			if ((employeeFull.get(i)).toString() == endReceiverComboBox.getValue()) {
+			if ((employeeFull.get(i)).toString().equals(endReceiverComboBox.getValue())) {
 				endReceiverNo = employeeAll.get(i).getId();
 				break;
 			}
@@ -210,6 +211,14 @@ public class DBMailOrderEditingController extends DatabaseEditingWindowControlle
 	public void update() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public TableView<Documents> getDBMailOrderDocumentTable() {
+		return DBMailOrderDocumentTable;
+	}
+
+	public void setDBMailOrderDocumentTable(TableView<Documents> dBMailOrderDocumentTable) {
+		DBMailOrderDocumentTable = dBMailOrderDocumentTable;
 	}
 
 }
