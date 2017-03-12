@@ -24,6 +24,12 @@ public class MailOrder extends Model {
 	@Column
 	private Timestamp mailOrdCreateDate;
 
+	@Column
+	private Timestamp mailOrdVizovKurieraDate;
+
+	@Column
+	private Timestamp mailOrdReceivedDate;
+
 	@ManyToOne
 	@JoinColumn(name = "mailOrdStatus")
 	private MailOrderStatuses MailOrdStatus;
@@ -117,6 +123,22 @@ public class MailOrder extends Model {
 
 	public void setMailOrdDocuments(String mailOrdDocuments) {
 		this.mailOrdDocuments = mailOrdDocuments;
+	}
+
+	public Timestamp getMailOrdVizovKurieraDate() {
+		return mailOrdVizovKurieraDate;
+	}
+
+	public void setMailOrdVizovKurieraDate(Timestamp mailOrdVizovKurieraDate) {
+		this.mailOrdVizovKurieraDate = mailOrdVizovKurieraDate;
+	}
+
+	public Timestamp getMailOrdReceivedDate() {
+		return mailOrdReceivedDate;
+	}
+
+	public void setMailOrdReceivedDate(Timestamp mailOrdReceivedDate) {
+		this.mailOrdReceivedDate = mailOrdReceivedDate;
 	}
 
 }

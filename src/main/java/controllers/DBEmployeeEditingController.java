@@ -71,7 +71,7 @@ public class DBEmployeeEditingController extends DatabaseEditingWindowController
 
 		try {
 			session.beginTransaction();
-			String sql = "INSERT INTO employee (empSurname, empFirstname, empFathername, empPosition, empEmail, empPhone, empPhoneAdditionalDigits, empRegion, empCity, empStreet, empHouse, empHousePart, empOffice) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO Employee (empSurname, empFirstname, empFathername, empPosition, empEmail, empPhone, empPhoneAdditionalDigits, empRegion, empCity, empStreet, empHouse, empHousePart, empOffice) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setParameter(0, empSurnameTextField.getText());
 			query.setParameter(1, empFirstnameTextField.getText());
@@ -150,9 +150,4 @@ public class DBEmployeeEditingController extends DatabaseEditingWindowController
 		empHousePartTextField.setText(selectedEmployee.getEmpHousePart());
 		empOfficeTextField.setText(selectedEmployee.getEmpOffice());
 	}
-
-	// public void closeDBEmployeeWindow(ActionEvent actionEvent) {
-	// ((Node) actionEvent.getSource()).getScene().getWindow().hide();
-	// }
-
 }

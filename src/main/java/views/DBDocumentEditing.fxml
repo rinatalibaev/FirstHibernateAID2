@@ -5,9 +5,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" prefHeight="356.0" prefWidth="476.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DBDocumentEditingController">
+<VBox maxHeight="-Infinity" prefHeight="396.0" prefWidth="476.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DBDocumentEditingController">
    <children>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="331.0" prefWidth="476.0">
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="365.0" prefWidth="476.0">
          <children>
             <AnchorPane prefHeight="362.0" prefWidth="242.0">
                <children>
@@ -43,6 +43,11 @@
                               <Insets bottom="14.0" left="10.0" top="14.0" />
                            </VBox.margin>
                         </Label>
+                        <Label text="Конечный получатель">
+                           <VBox.margin>
+                              <Insets bottom="14.0" left="10.0" top="14.0" />
+                           </VBox.margin>
+                        </Label>
                         <Label fx:id="docInsertDateLabel" text="Дата добавления документа">
                            <VBox.margin>
                               <Insets bottom="14.0" left="10.0" top="14.0" />
@@ -52,11 +57,11 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="362.0" prefWidth="361.0">
+            <AnchorPane prefHeight="365.0" prefWidth="355.0">
                <children>
-                  <VBox prefHeight="362.0" prefWidth="361.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox prefHeight="360.0" prefWidth="298.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ComboBox fx:id="docTypeComboBox" prefHeight="25.0" prefWidth="297.0">
+                        <ComboBox fx:id="docTypeComboBox" prefHeight="25.0" prefWidth="297.0" promptText="Тип документа">
                            <VBox.margin>
                               <Insets bottom="10.0" top="10.0" />
                            </VBox.margin>
@@ -83,11 +88,16 @@
                                  </HBox.margin></Button>
                            </children>
                         </HBox>
-                        <ComboBox fx:id="docStatusComboBox" prefHeight="25.0" prefWidth="297.0">
+                        <ComboBox fx:id="docStatusComboBox" prefHeight="25.0" prefWidth="297.0" promptText="Статус документа">
                            <VBox.margin>
                               <Insets bottom="10.0" top="10.0" />
                            </VBox.margin></ComboBox>
-                        <ComboBox fx:id="docInsertedEmployeeComboBox" prefHeight="25.0" prefWidth="297.0">
+                        <ComboBox fx:id="docInsertedEmployeeComboBox" prefHeight="25.0" prefWidth="297.0" promptText="Добавил документ">
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <ComboBox fx:id="docEndReceiverEmployeeComboBox" prefHeight="25.0" prefWidth="287.0" promptText="Конечный получатель">
                            <VBox.margin>
                               <Insets bottom="10.0" top="10.0" />
                            </VBox.margin>
@@ -106,9 +116,9 @@
             </AnchorPane>
          </children>
       </HBox>
-      <HBox prefHeight="45.0" prefWidth="459.0" VBox.vgrow="ALWAYS">
+      <HBox prefHeight="50.0" prefWidth="476.0" VBox.vgrow="ALWAYS">
          <children>
-            <AnchorPane prefHeight="45.0" prefWidth="198.0" HBox.hgrow="ALWAYS">
+            <AnchorPane prefHeight="55.0" prefWidth="476.0" HBox.hgrow="ALWAYS">
                <children>
                   <Button fx:id="okButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#update" prefWidth="60.0" text="ОК" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="85.0" />
                   <Button cancelButton="true" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeDBEmployeeWindow" prefWidth="60.0" text="Отмена" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />

@@ -44,6 +44,8 @@ public class DBDocumentWindowController extends DatabaseViewingWindowController 
 	TableColumn<Documents, String> DBDocumentTableColumn5;
 	@FXML
 	TableColumn<Documents, String> DBDocumentTableColumn6;
+	@FXML
+	TableColumn<Documents, String> DBDocumentTableColumn7;
 
 	private String delete_hql_query = "DELETE FROM Documents WHERE id = :id";
 
@@ -55,10 +57,11 @@ public class DBDocumentWindowController extends DatabaseViewingWindowController 
 		DBDocumentTableId.setCellValueFactory(new PropertyValueFactory<Documents, String>("id"));
 		DBDocumentTableColumn1.setCellValueFactory(new PropertyValueFactory<Documents, String>("docTypeName"));
 		DBDocumentTableColumn2.setCellValueFactory(new PropertyValueFactory<Documents, String>("docName"));
-		DBDocumentTableColumn3.setCellValueFactory(new PropertyValueFactory<Documents, String>("docStatusName"));
-		DBDocumentTableColumn4.setCellValueFactory(new PropertyValueFactory<Documents, String>("docDate"));
-		DBDocumentTableColumn5.setCellValueFactory(new PropertyValueFactory<Documents, String>("docInsertedDate"));
-		DBDocumentTableColumn6.setCellValueFactory(new PropertyValueFactory<Documents, String>("docInsertedEmployeeSurname"));
+		DBDocumentTableColumn3.setCellValueFactory(new PropertyValueFactory<Documents, String>("docEndReceiverEmployee"));
+		DBDocumentTableColumn4.setCellValueFactory(new PropertyValueFactory<Documents, String>("docStatusName"));
+		DBDocumentTableColumn5.setCellValueFactory(new PropertyValueFactory<Documents, String>("docDate"));
+		DBDocumentTableColumn6.setCellValueFactory(new PropertyValueFactory<Documents, String>("docInsertedDate"));
+		DBDocumentTableColumn7.setCellValueFactory(new PropertyValueFactory<Documents, String>("docInsertedEmployeeSurname"));
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		ObservableList<Documents> documents = null;
@@ -120,11 +123,7 @@ public class DBDocumentWindowController extends DatabaseViewingWindowController 
 
 	@FXML
 	public void editingEntry(Event event) {
-		System.out.println("First line in DBDocumentEditing()");
 		Documents selectedDocument = (Documents) DBDocumentTable.getSelectionModel().getSelectedItem();
-		// Window parentWindow = ((Node)
-		// event.getSource()).getScene().getWindow();
-		System.out.println("Before try in DBDocumentEditing()");
 
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -143,6 +142,7 @@ public class DBDocumentWindowController extends DatabaseViewingWindowController 
 			dbDocumentEditingController.docDateDatePicker.setDisable(true);
 			dbDocumentEditingController.choosedDocumentTextField.setText(selectedDocument.getDocServerPath());
 			dbDocumentEditingController.choosedDocumentTextField.setDisable(true);
+			dbDocumentEditingController.docEndReceiverEmployeeComboBox.setDisable(true);
 			dbDocumentEditingController.docChooseButton.setText("Открыть");
 			scene = new Scene(fxmlEdit);
 			System.out.println("Before setDocument()");
@@ -174,6 +174,9 @@ public class DBDocumentWindowController extends DatabaseViewingWindowController 
 			dbDocumentEditingController.parentController = this;
 			dbDocumentEditingController.docInsertedDateTextField.setDisable(true);
 			dbDocumentEditingController.docInsertedEmployeeComboBox.setDisable(true);
+			dbDocumentEditingController.docStatusComboBox.setDisable(true);
+			dbDocumentEditingController.docEndReceiverEmployeeComboBox.setDisable(true);
+			dbDocumentEditingController.okButton.setVisible(false);
 			dbDocumentEditingController.docTypeComboBox.setDisable(true);
 			dbDocumentEditingController.docNameTextField.setDisable(true);
 			dbDocumentEditingController.docDateDatePicker.setDisable(true);

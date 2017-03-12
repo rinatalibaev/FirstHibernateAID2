@@ -57,18 +57,14 @@
         <scope>system</scope>
 	</dependency>
 	<dependency>
-        <groupId>org.mongodb</groupId>
-        <artifactId>mongodb-driver</artifactId>
-    </dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi</artifactId>
+		<version>3.16-beta2</version>
+	</dependency>
 	<dependency>
-  			<groupId>org.mongodb</groupId>
-  			<artifactId>mongodb-driver</artifactId>
-  			<version>3.4.2</version>
-  	</dependency>
-  	<dependency>
-        <groupId>org.mongodb</groupId>
-        <artifactId>mongo-java-driver</artifactId>
-        <version>3.4.2</version>
-    </dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi-ooxml-schemas</artifactId>
+		<version>3.16-beta2</version>
+	</dependency>
   	</dependencies>
 </project>

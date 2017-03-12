@@ -37,6 +37,10 @@ public class Documents extends Model {
 	@JoinColumn(name = "mailOrdDocuments")
 	private MailOrder mailOrdDocuments;
 
+	@ManyToOne
+	@JoinColumn(name = "docEndReceiverEmployee")
+	private Employee docEndReceiverEmployee;
+
 	@ManyToOne(cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "DocStatusName")
 	private DocStatuses DocStatusName;
@@ -124,6 +128,14 @@ public class Documents extends Model {
 
 	public void setMailOrdDocuments(MailOrder mailOrdDocuments) {
 		this.mailOrdDocuments = mailOrdDocuments;
+	}
+
+	public Employee getDocEndReceiverEmployee() {
+		return docEndReceiverEmployee;
+	}
+
+	public void setDocEndReceiverEmployee(Employee docEndReceiverEmployee) {
+		this.docEndReceiverEmployee = docEndReceiverEmployee;
 	}
 
 	@Override

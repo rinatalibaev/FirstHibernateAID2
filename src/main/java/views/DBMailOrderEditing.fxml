@@ -39,23 +39,10 @@
                         </ComboBox>
                      </children>
                   </VBox>
-                  <VBox prefHeight="44.0" prefWidth="190.0" AnchorPane.leftAnchor="390.0" AnchorPane.topAnchor="10.0">
-                     <children>
-                        <Label text="Конечный получатель">
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        <ComboBox fx:id="endReceiverComboBox" prefHeight="25.0" prefWidth="190.0" promptText="Конечный получатель">
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </ComboBox>
-                     </children>
-                  </VBox>
+                  <VBox prefHeight="44.0" prefWidth="190.0" AnchorPane.leftAnchor="390.0" AnchorPane.topAnchor="10.0" />
                   <VBox prefHeight="44.0" prefWidth="190.0" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="10.0">
                      <children>
-                        <Label text="Желаемая дата отправления">
+                        <Label fx:id="toSendDateLabel" text="Желаемая дата отправления">
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin>
@@ -93,13 +80,19 @@
          <children>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <VBox prefHeight="44.0" prefWidth="190.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
+                  <VBox prefHeight="44.0" prefWidth="180.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Label fx:id="mailOrderInsertDateLabel" text="Дата оформления заказа" />
                         <DatePicker fx:id="createDateDatePicker" prefHeight="25.0" prefWidth="190.0" />
                      </children>
                   </VBox>
-                  <VBox prefHeight="44.0" prefWidth="190.0" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="0.0">
+                  <VBox prefHeight="44.0" prefWidth="180.0" AnchorPane.leftAnchor="205.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label fx:id="dataVizovaKurieraDateLabel" text="Дата заказа курьера" />
+                        <DatePicker fx:id="dataVizovaKurieraDatePicker" prefHeight="25.0" prefWidth="190.0" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="44.0" prefWidth="180.0" AnchorPane.leftAnchor="392.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Label fx:id="mailOrderSentDateLabel" text="Дата отправления">
                            <VBox.margin>
@@ -107,6 +100,20 @@
                            </VBox.margin>
                         </Label>
                         <DatePicker fx:id="sentDateDatePicker" prefHeight="25.0" prefWidth="190.0">
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                        </DatePicker>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="44.0" prefWidth="180.0" AnchorPane.leftAnchor="580.0">
+                     <children>
+                        <Label fx:id="receivedDateDateLabel" text="Дата получения">
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <DatePicker fx:id="receivedDateDatePicker" prefHeight="25.0" prefWidth="190.0">
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin>
@@ -122,9 +129,10 @@
             <AnchorPane prefHeight="30.0" prefWidth="770.0" HBox.hgrow="ALWAYS">
                <children>
                   <Button fx:id="docChooseButton" mnemonicParsing="false" onAction="#chooseDocument" prefHeight="25.0" prefWidth="131.0" text="Добавить документ" AnchorPane.leftAnchor="10.0" />
-                  <Button fx:id="docDeleteButton" mnemonicParsing="false" text="Удалить документ" AnchorPane.leftAnchor="155.0" />
+                  <Button fx:id="docDeleteButton" mnemonicParsing="false" onAction="#deleteDocFromMailOrder" text="Удалить документ" AnchorPane.leftAnchor="155.0" />
                   <Button fx:id="okButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#update" prefWidth="60.0" text="ОК" AnchorPane.rightAnchor="85.0" />
                   <Button fx:id="escButton" cancelButton="true" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#close" prefWidth="60.0" text="Отмена" AnchorPane.rightAnchor="10.0" />
+                  <Button fx:id="statusChangeButton" layoutX="484.0" layoutY="8.0" mnemonicParsing="false" onAction="#callCourier" prefHeight="25.0" prefWidth="155.0" text="Вызвать курьера" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="160.0" />
                </children>
                <HBox.margin>
                   <Insets top="10.0" />

@@ -1,9 +1,14 @@
 package controllers;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -32,6 +37,16 @@ public class DBMailOrdersController extends DatabaseViewingWindowController {
 	private String title = "АС административного сопровождения - База данных - Заказы курьера";
 
 	private String delete_hql_query = "DELETE FROM MailOrder WHERE id = :id";
+
+	private MailOrder mailOrder = null;
+
+	public MailOrder getMailOrder() {
+		return mailOrder;
+	}
+
+	public void setMailOrder(MailOrder mailOrder) {
+		this.mailOrder = mailOrder;
+	}
 
 	@FXML
 	TableView<MailOrder> DBMailOrderTable;
@@ -103,11 +118,21 @@ public class DBMailOrdersController extends DatabaseViewingWindowController {
 			dbMailOrdersEditing.parentController = this;
 			dbMailOrdersEditing.sentDateDatePicker.setVisible(false);
 			dbMailOrdersEditing.createDateDatePicker.setVisible(false);
+			dbMailOrdersEditing.dataVizovaKurieraDatePicker.setVisible(false);
+			dbMailOrdersEditing.receivedDateDatePicker.setVisible(false);
 			dbMailOrdersEditing.mailOrderInsertDateLabel.setVisible(false);
 			dbMailOrdersEditing.mailOrderSentDateLabel.setVisible(false);
+			dbMailOrdersEditing.dataVizovaKurieraDateLabel.setVisible(false);
+			dbMailOrdersEditing.receivedDateDateLabel.setVisible(false);
+			dbMailOrdersEditing.statusChangeButton.setVisible(false);
 			dbMailOrdersEditing.okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
+					if (dbMailOrdersEditing.toSendDateDatePicker.getValue().isBefore(LocalDate.now().plusDays(1L)) || (dbMailOrdersEditing.toSendDateDatePicker.getValue().getDayOfWeek() == DayOfWeek.SATURDAY)
+							|| (dbMailOrdersEditing.toSendDateDatePicker.getValue().getDayOfWeek() == DayOfWeek.SUNDAY)) {
+						showInfo("Вы не можете заказать курьера ранее, чем на завтра");
+						return;
+					}
 					dbMailOrdersEditing.add(event);
 				}
 			});
@@ -122,73 +147,54 @@ public class DBMailOrdersController extends DatabaseViewingWindowController {
 
 	@Override
 	public void editingEntry(Event event) {
-		System.out.println("in DBMailOrderWindowController.editingEntry()");
-		MailOrder mailOrder = DBMailOrderTable.getSelectionModel().getSelectedItem();
+		mailOrder = DBMailOrderTable.getSelectionModel().getSelectedItem();
 		DBMailOrderEditingController dbMailOrderEditingController;
-		Session session = sessionExtracting();
-		session.beginTransaction();
-		// Criteria criteriaEmployee = session.createCriteria(Employee.class);
-		// List<Employee> listEmployee = criteriaEmployee.list();
-		Criteria criteriaDocuments = session.createCriteria(Documents.class);
-		List<Documents> listDocuments = criteriaDocuments.list();
 		Parent panel;
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		fxmlLoader.setLocation(getClass().getResource("../views/DBMailOrderEditing.fxml"));
-		System.out.println("after fxml-loading");
 		try {
-			Stage stage = new Stage();
 			panel = fxmlLoader.load();
 			dbMailOrderEditingController = fxmlLoader.getController();
+			dbMailOrderEditingController.parentController = this;
+			Scene scene = new Scene(panel);
+			Stage stage = new Stage();
+			if (mailOrder.getMailOrdStatus().getId() == 1) {
+				setStatusChangeButtonFunctionality("Вызвать курьера", "UPDATE MailOrder SET mailOrdVizovKurieraDate = ?, mailOrdStatus = ?  WHERE id = ?", 2, dbMailOrderEditingController, stage, mailOrder);
+			}
+			if (mailOrder.getMailOrdStatus().getId() == 2) {
+				dbMailOrderEditingController.statusChangeButton.setOnAction(null);
+				setStatusChangeButtonFunctionality("Курьер забрал заказ", "UPDATE MailOrder SET mailOrdSentDate = ?, mailOrdStatus = ?  WHERE id = ?", 3, dbMailOrderEditingController, stage, mailOrder);
+			}
+			if (mailOrder.getMailOrdStatus().getId() == 3) {
+				dbMailOrderEditingController.statusChangeButton.setOnAction(null);
+				setStatusChangeButtonFunctionality("Заказ выполнен", "UPDATE MailOrder SET mailOrdReceivedDate = ?, mailOrdStatus = ?  WHERE id = ?", 4, dbMailOrderEditingController, stage, mailOrder);
+			}
+			if (mailOrder.getMailOrdStatus().getId() == 4) {
+				dbMailOrderEditingController.statusChangeButton.setOnAction(null);
+				setStatusChangeButtonFunctionality("", "", 0, dbMailOrderEditingController, stage, mailOrder);
+			}
 			dbMailOrderEditingController.senderComboBox.setValue(mailOrder.getMailOrdSenderNo().toString());
 			dbMailOrderEditingController.receiverComboBox.setValue(mailOrder.getMailOrdReceiverNo().toString());
-			dbMailOrderEditingController.endReceiverComboBox.setValue(mailOrder.getMailOrdEndReceiverNo().toString());
 			dbMailOrderEditingController.toSendDateDatePicker.setValue(mailOrder.getMailOrdToSendDate());
-			ObservableList<Documents> documentList = FXCollections.observableArrayList();
-			String docNumber = "";
-			if (mailOrder.getMailOrdDocuments() != null) {
-				for (int i = 0; i < mailOrder.getMailOrdDocuments().length(); i++) {
-					if (!mailOrder.getMailOrdDocuments().substring(i, i + 1).equals(",")) {
-						System.out.println("in if");
-						docNumber = docNumber + mailOrder.getMailOrdDocuments().substring(i, i + 1);
-						if (i == mailOrder.getMailOrdDocuments().length() - 1) {
-							for (Documents document : listDocuments) {
-								if (document.getId() == Integer.parseInt(docNumber)) {
-									documentList.add(document);
-								}
-							}
-							docNumber = "";
-						}
-					} else {
-						System.out.println("in else");
-						for (Documents document : listDocuments) {
-							if (document.getId() == Integer.parseInt(docNumber)) {
-								documentList.add(document);
-							}
-						}
-						docNumber = "";
-					}
-				}
-			}
-			dbMailOrderEditingController.DBMailOrderDocumentTable.setItems(documentList);
-			dbMailOrderEditingController.DBMailOrderDocumentTable.refresh();
+			dbMailOrderEditingController.createDateDatePicker.setValue(mailOrder.getMailOrdCreateDate().toLocalDateTime().toLocalDate());
+			dbMailOrderEditingController.okButton.setDisable(true);
+			dbMailOrderEditingController.DBMailOrderDocumentTable.setItems(getDocumentsFromMailOrder(mailOrder));
 			dbMailOrderEditingController.DBMailOrderDocumentTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
 				@Override
 				public void handle(MouseEvent event) {
-					if (event.getButton().equals(MouseButton.PRIMARY)) {
+					if (event.getButton().equals(MouseButton.PRIMARY) && !(dbMailOrderEditingController.DBMailOrderDocumentTable.getSelectionModel().getSelectedItem() == null)) {
 						if (event.getClickCount() == 2) {
 							DBDocumentWindowController dbDocumentWindowController = new DBDocumentWindowController();
 							dbDocumentWindowController.editingEntry(dbMailOrderEditingController.DBMailOrderDocumentTable.getSelectionModel().getSelectedItem());
 						}
 					}
 				}
-
 			});
-			Scene scene = new Scene(panel);
 			stage.setScene(scene);
+			System.out.println("Before stage.show() in DBMailOrdersController.editingEntry(). Time: " + LocalDateTime.now().format(DateTimeFormatter.ISO_TIME));
 			stage.show();
+			System.out.println("After stage.show() in DBMailOrdersController.editingEntry(). Time: " + LocalDateTime.now().format(DateTimeFormatter.ISO_TIME));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -199,9 +205,103 @@ public class DBMailOrdersController extends DatabaseViewingWindowController {
 	}
 
 	public void DBMailOrderDeleting() {
-		MailOrder selectedDocument = (MailOrder) DBMailOrderTable.getSelectionModel().getSelectedItem();
-		selectedDocument.delete(delete_hql_query);
+		if (DBMailOrderTable.getSelectionModel().getSelectedItem().getMailOrdStatus().getId() != 1) {
+			showInfo("Удаление невозможно, так как курьер заказан или заказ выполнен");
+			return;
+		}
+		MailOrder selectedMailOrder = (MailOrder) DBMailOrderTable.getSelectionModel().getSelectedItem();
+		selectedMailOrder.delete(delete_hql_query);
 		initialize();
 		DBMailOrderTable.refresh();
+	}
+
+	public ObservableList<Documents> getDocumentsFromMailOrder(MailOrder mailOrder) {
+		Session session = sessionExtracting();
+		session.beginTransaction();
+		Criteria criteriaDocuments = session.createCriteria(Documents.class);
+		List<Documents> listDocuments = criteriaDocuments.list();
+		ObservableList<Documents> documentList = FXCollections.observableArrayList();
+		String docNumber = "";
+		if (mailOrder.getMailOrdDocuments() != null) {
+			for (int i = 0; i < mailOrder.getMailOrdDocuments().length(); i++) {
+				if (!mailOrder.getMailOrdDocuments().substring(i, i + 1).equals(",")) {
+					docNumber = docNumber + mailOrder.getMailOrdDocuments().substring(i, i + 1);
+					if (i == mailOrder.getMailOrdDocuments().length() - 1) {
+						for (Documents document : listDocuments) {
+							if (document.getId() == Integer.parseInt(docNumber)) {
+								documentList.add(document);
+							}
+						}
+						docNumber = "";
+					}
+				} else {
+					for (Documents document : listDocuments) {
+						if (document.getId() == Integer.parseInt(docNumber)) {
+							documentList.add(document);
+						}
+					}
+					docNumber = "";
+				}
+			}
+		}
+		return documentList;
+	}
+
+	public void setStatusChangeButtonFunctionality(String buttonText, String sqlQuery, int mailOrdStatus, DBMailOrderEditingController dbMailOrderEditingController, Stage stage, MailOrder mailOrder) {
+		dbMailOrderEditingController.statusChangeButton.setText(buttonText);
+		if (mailOrder.getMailOrdCreateDate() != null) {
+			dbMailOrderEditingController.dataVizovaKurieraDatePicker.setVisible(false);
+			dbMailOrderEditingController.dataVizovaKurieraDateLabel.setVisible(false);
+			dbMailOrderEditingController.sentDateDatePicker.setVisible(false);
+			dbMailOrderEditingController.mailOrderSentDateLabel.setVisible(false);
+			dbMailOrderEditingController.receivedDateDatePicker.setVisible(false);
+			dbMailOrderEditingController.receivedDateDateLabel.setVisible(false);
+		}
+		if (mailOrder.getMailOrdVizovKurieraDate() != null) {
+			dbMailOrderEditingController.dataVizovaKurieraDatePicker.setValue(mailOrder.getMailOrdVizovKurieraDate().toLocalDateTime().toLocalDate());
+			dbMailOrderEditingController.sentDateDatePicker.setVisible(false);
+			dbMailOrderEditingController.mailOrderSentDateLabel.setVisible(false);
+			dbMailOrderEditingController.dataVizovaKurieraDatePicker.setVisible(true);
+			dbMailOrderEditingController.dataVizovaKurieraDateLabel.setVisible(true);
+		}
+		if (mailOrder.getMailOrdSentDate() != null) {
+			dbMailOrderEditingController.sentDateDatePicker.setValue(mailOrder.getMailOrdSentDate().toLocalDateTime().toLocalDate());
+			dbMailOrderEditingController.docChooseButton.setVisible(false);
+			dbMailOrderEditingController.docDeleteButton.setVisible(false);
+			dbMailOrderEditingController.sentDateDatePicker.setVisible(true);
+			dbMailOrderEditingController.mailOrderSentDateLabel.setVisible(true);
+			dbMailOrderEditingController.toSendDateDatePicker.setVisible(false);
+			dbMailOrderEditingController.toSendDateLabel.setVisible(false);
+		}
+		if (mailOrder.getMailOrdReceivedDate() != null) {
+			dbMailOrderEditingController.receivedDateDatePicker.setValue(mailOrder.getMailOrdReceivedDate().toLocalDateTime().toLocalDate());
+			dbMailOrderEditingController.receivedDateDatePicker.setVisible(true);
+			dbMailOrderEditingController.receivedDateDateLabel.setVisible(true);
+			dbMailOrderEditingController.toSendDateDatePicker.setVisible(false);
+			dbMailOrderEditingController.toSendDateLabel.setVisible(false);
+		}
+		if (!buttonText.equals("")) {
+			dbMailOrderEditingController.statusChangeButton.setOnMouseClicked(new EventHandler<Event>() {
+
+				@Override
+				public void handle(Event event) {
+					Session session = sessionExtracting();
+					session.beginTransaction();
+					SQLQuery query = session.createSQLQuery(sqlQuery);
+					query.setParameter(0, LocalDateTime.now());
+					query.setParameter(1, mailOrdStatus);
+					query.setParameter(2, mailOrder.getId());
+					query.executeUpdate();
+					session.getTransaction().commit();
+					session.close();
+					initialize();
+					DBMailOrderTable.refresh();
+					stage.hide();
+
+				}
+			});
+		} else {
+			dbMailOrderEditingController.statusChangeButton.setVisible(false);
+		}
 	}
 }

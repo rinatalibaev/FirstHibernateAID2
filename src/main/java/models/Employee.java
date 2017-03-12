@@ -57,10 +57,10 @@ public class Employee extends Model {
 	private Set<MailOrder> receiver_in_MailOrders = new HashSet<MailOrder>();
 	@OneToMany(mappedBy = "mailOrdSenderNo")
 	private Set<MailOrder> sender_in_MailOrders = new HashSet<MailOrder>();
-	@OneToMany(mappedBy = "mailOrdEndReceiverNo")
-	private Set<MailOrder> endReceiver_in_MailOrders = new HashSet<MailOrder>();
 	@OneToMany(mappedBy = "docInsertedEmployee")
-	private Set<Documents> insertedEmployeeSurname_in_Documents = new HashSet<Documents>();
+	private Set<Documents> insertedEmployee_in_Documents = new HashSet<Documents>();
+	@OneToMany(mappedBy = "docEndReceiverEmployee")
+	private Set<Documents> endReceiverEmployee_in_Documents = new HashSet<Documents>();
 
 	public Employee() {
 
@@ -186,15 +186,21 @@ public class Employee extends Model {
 		this.sender_in_MailOrders = sender_in_MailOrders;
 	}
 
-	// @Override
-	// public String toString() {
-	// return super.getId() + " | " + getEmpSurname() + " | " +
-	// getEmpFirstname() + " | " + getEmpFathername() + " | " + getEmpCity() + "
-	// | " + getEmpEmail() + " | " + getEmpHouse() + " | " + getEmpOffice() + "
-	// | " + getEmpPhone() + " | "
-	// + getEmpPosition() + " | " + getEmpRegion() + " | " + getEmpStreet() + "
-	// | " + getEmpPhoneAdditionalDigits() + " | " + getEmpHousePart();
-	// }
+	public Set<Documents> getInsertedEmployee_in_Documents() {
+		return insertedEmployee_in_Documents;
+	}
+
+	public Set<Documents> getEndReceiverEmployee_in_Documents() {
+		return endReceiverEmployee_in_Documents;
+	}
+
+	public void setInsertedEmployee_in_Documents(Set<Documents> insertedEmployee_in_Documents) {
+		this.insertedEmployee_in_Documents = insertedEmployee_in_Documents;
+	}
+
+	public void setEndReceiverEmployee_in_Documents(Set<Documents> endReceiverEmployee_in_Documents) {
+		this.endReceiverEmployee_in_Documents = endReceiverEmployee_in_Documents;
+	}
 
 	public String toString() {
 		return getEmpSurname() + " " + getEmpFirstname();
